@@ -1,5 +1,5 @@
 import type { DeepPartial, Theme } from '@chakra-ui/react';
-import { Figtree as FontBody } from 'next/font/google';
+import { Inter as FontBody } from 'next/font/google';
 
 export const fontBody = FontBody({
   subsets: ['latin'],

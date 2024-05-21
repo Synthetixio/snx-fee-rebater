@@ -25,12 +25,14 @@ const Layout = ({ children }: LayoutProps) => {
           'background-image': "url('/bg.svg') !important;",
           'background-size': 'cover',
         }}
-        opacity="0.08"
+        opacity="0.066"
       />
       <Box margin="0 auto" maxWidth={800} transition="0.5s ease-out">
-        <Box margin="8">
+        <Box my={24}>
+          <Box mb={12}>
           <Header />
-          <Box as="main" marginY={22}>
+          </Box>
+          <Box as="main">
             {children}
           </Box>
           <Footer />
