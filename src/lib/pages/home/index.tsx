@@ -1,6 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 
-import DataTable from '~/lib/components/DataTable';
+import { DataTable } from '~/lib/components/DataTable';
 
 const Home = () => {
   return (
@@ -13,7 +13,7 @@ const Home = () => {
       mb={8}
       w="full"
     >
-      <DataTable />
+      <DataTable data={[]} columns={[]} />
     </Flex>
   );
 };
