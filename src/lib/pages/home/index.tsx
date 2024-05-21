@@ -16,6 +16,7 @@ import {
   CircularProgressLabel,
 } from '@chakra-ui/react';
 import { addWeeks, startOfWeek, endOfWeek, format, isBefore } from 'date-fns';
+import { useEffect } from 'react';
 
 import { DataTable } from '~/lib/components/DataTable';
 
@@ -55,6 +56,15 @@ const filteredWeeks = weeks.filter((week) => {
 });
 
 const Home = () => {
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await fetch('/api/data');
+      const data = await response.json();
+      console.log('DATA', data);
+    };
+
+    fetchUsers();
+  }, []);
   return (
     <Flex direction="column" minHeight="70vh" gap={8} mb={8} w="full">
       <Flex gap={8}>
@@ -119,10 +129,17 @@ const Home = () => {
         <Box ml="auto" minWidth="280px">
           <Select bg="black">
             <option selected value="option1">
+<<<<<<< HEAD
               Week X (X/X - X/X)
             </option>
             <option value="option2">Week X (X/X - X/X)</option>
             <option value="option3">Week X (X/X - X/X)</option>
+=======
+              Option 1
+            </option>
+            <option value="option2">Option 2</option>
+            <option value="option3">Option 3</option>
+>>>>>>> 63be69a (feat(components): smh)
           </Select>
         </Box>
       </Flex>
