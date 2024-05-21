@@ -9,10 +9,10 @@ const Header = () => {
       <Flex ml="auto" gap={10}>
         <Link 
                 borderBottom="1px solid"
-                borderColor="gray.700" pb={0.5} color="gray.300" _hover={{color: "gray.100", borderColor:"gray.500"}} fontSize="sm" fontWeight="semibold" letterSpacing="0.2rem" textTransform="uppercase" href="https://v3.kwenta.io">Trade</Link>
+                borderColor="gray.700" pb={0.5} color="gray.300" _hover={{color: "gray.100", borderColor:"gray.500"}} fontSize="sm" fontWeight="medium" letterSpacing="0.2rem" textTransform="uppercase" href="https://v3.kwenta.io">Trade</Link>
         <Link 
                 borderBottom="1px solid"
-                borderColor="gray.700" pb={0.5} color="gray.300" _hover={{color: "gray.100", borderColor:"gray.500"}} fontSize="sm" fontWeight="semibold" letterSpacing="0.2rem" textTransform="uppercase" href="https://liquidity.synthetix.eth.limo">
+                borderColor="gray.700" pb={0.5} color="gray.300" _hover={{color: "gray.100", borderColor:"gray.500"}} fontSize="sm" fontWeight="medium" letterSpacing="0.2rem" textTransform="uppercase" href="https://liquidity.synthetix.eth.limo">
           Provide Liquidity
         </Link>
       </Flex>

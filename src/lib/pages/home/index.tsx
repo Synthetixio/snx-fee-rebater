@@ -73,15 +73,15 @@ const Home = () => {
           bg="black"
           border="1px solid"
           borderColor="whiteAlpha.300"
-          p={8}
+          p={6}
           borderRadius="md"
         >
-          <Heading size="md" mb={4}>
+          <Heading size="md" fontWeight="semibold" mb={4}>
             Synthetix is rebating trading fees on Base
           </Heading>
           <UnorderedList>
             <ListItem mb={2}>
-              Synthetix is rebating 90% trading fees spent using Synthetix’s
+              Synthetix is rebating 90% of accounts' trading fees spent using Synthetix’s
               perpetual futures markets on Base with 500,000 SNX allocated by
               the Treasury Council.
             </ListItem>
@@ -108,13 +108,13 @@ const Home = () => {
           bg="black"
           border="1px solid"
           borderColor="whiteAlpha.300"
-          p={8}
+          p={6}
           borderRadius="md"
-          minWidth="280px"
+          minWidth="240px"
         >
-          <Heading size="md" mb={4}>SNX Distributed</Heading>
-          <CircularProgress value={40} trackColor="#001C22" color="#00D1FF" size='100%' thickness='8px'>
-            <CircularProgressLabel fontSize="xl" fontWeight="semibold">123,302 SNX</CircularProgressLabel>
+          <Heading size="md" fontWeight="semibold" mb={4}>Total Distributed</Heading>
+          <CircularProgress value={40} trackColor="#001C22" color="#00D1FF" size='100%' thickness='6px'>
+            <CircularProgressLabel fontSize="md" fontWeight="medium" letterSpacing="0.1rem" textTransform="uppercase">123,302 SNX</CircularProgressLabel>
           </CircularProgress>
         </Box>
       </Flex>
@@ -126,7 +126,7 @@ const Home = () => {
           <Input type="tel" placeholder="Filter by wallet address" />
         </InputGroup>
 
-        <Box ml="auto" minWidth="280px">
+        <Box ml="auto" minWidth="240px">
           <Select bg="black">
             <option selected value="option1">
 <<<<<<< HEAD
