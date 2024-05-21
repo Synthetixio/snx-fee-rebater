@@ -129,17 +129,10 @@ const Home = () => {
         <Box ml="auto" minWidth="240px">
           <Select bg="black">
             <option selected value="option1">
-<<<<<<< HEAD
               Week X (X/X - X/X)
             </option>
             <option value="option2">Week X (X/X - X/X)</option>
             <option value="option3">Week X (X/X - X/X)</option>
-=======
-              Option 1
-            </option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
->>>>>>> 63be69a (feat(components): smh)
           </Select>
         </Box>
       </Flex>
