@@ -16,8 +16,9 @@ import {
   Progress,
   Spinner,
 } from '@chakra-ui/react';
-import { addWeeks, startOfWeek, endOfWeek, format, isBefore } from 'date-fns';
-import { useEffect, useState, ChangeEvent } from 'react';
+import { addWeeks, format, isBefore } from 'date-fns';
+import type { ChangeEvent } from 'react';
+import { useEffect, useState } from 'react';
 
 import { DataTable } from '~/lib/components/DataTable';
 import type { ProcessedData } from '~/lib/utils/processData';
@@ -31,12 +32,8 @@ const formatDate = (date: Date): string =>
 const generateWeeks = (startDate: Date, numberOfWeeks: number) => {
   const weeksArray = [];
   for (let i = 0; i < numberOfWeeks; i++) {
-    const startOfWeekDate = startOfWeek(addWeeks(startDate, i), {
-      weekStartsOn: 3,
-    }); // startOfWeek sets week start to Wednesday
-    const endOfWeekDate = endOfWeek(addWeeks(startDate, i), {
-      weekStartsOn: 3,
-    }); // endOfWeek sets week end to Tuesday
+    const startOfWeekDate = addWeeks(startDate, i); // startOfWeek sets week start to Wednesday
+    const endOfWeekDate = addWeeks(startDate, i); // endOfWeek sets week end to Tuesday
     weeksArray.push({
       start: formatDate(startOfWeekDate),
       end: formatDate(endOfWeekDate),
@@ -53,10 +50,12 @@ const weeks = generateWeeks(initialStartDate, 100);
 
 // Filter out weeks that start later than the current time
 const now = new Date();
-const filteredWeeks = weeks.filter((week) => {
-  const startOfWeekDate = new Date(week.start);
-  return isBefore(startOfWeekDate, now);
-}).reverse();
+const filteredWeeks = weeks
+  .filter((week) => {
+    const startOfWeekDate = new Date(week.start);
+    return isBefore(startOfWeekDate, now);
+  })
+  .reverse();
 
 const Home = () => {
   const [tableData, setTableData] = useState<any>([]);
@@ -104,9 +103,17 @@ const Home = () => {
               Synthetix is rebating a share of fees on Base
             </Heading>
             <Text mb={2}>
-              Synthetix is rebating trading fees from the perpetual futures
-              markets deployed to Base with 500,000 SNX allocated by the
-              Treasury Council. Read about the criteria in&nbsp;
+              <Link
+                _hover={{ textDecor: 'none', borderColor: 'gray.500' }}
+                borderBottom="1px solid"
+                borderColor="gray.600"
+                href="https://v3.synthetix.io"
+              >
+                Synthetix
+              </Link>{' '}
+              is rebating trading fees from the perpetual futures markets
+              deployed to Base with 500,000 SNX allocated by the Treasury
+              Council. Read about the criteria in&nbsp;
               <Link
                 _hover={{ textDecor: 'none', borderColor: 'gray.500' }}
                 borderBottom="1px solid"
@@ -164,43 +171,47 @@ const Home = () => {
         </Box>
       </Flex>
 
-      <Box
-        color="gray.300"
-        bg="black"
-        border="1px solid"
-        borderColor="whiteAlpha.300"
-        p={6}
-        borderRadius="md"
-      >
-        <Flex
-          mb={3.5}
-          alignItems={['left', 'left', 'center']}
-          direction={['column', 'column', 'row']}
+      {filteredWeeks[selectedWeek] && (
+        <Box
+          color="gray.300"
+          bg="black"
+          border="1px solid"
+          borderColor="whiteAlpha.300"
+          p={6}
+          borderRadius="md"
         >
-          <Heading size="md" fontWeight="semibold" mb={[2, 2, 0]}>
-            Distribution Estimate for Week {selectedWeek + 1} ({format(filteredWeeks[selectedWeek].start, 'M/dd')} - {format(filteredWeeks[selectedWeek].end, 'M/dd')})
-          </Heading>
-          <Text
-            fontSize="md"
-            fontWeight="medium"
-            textTransform="uppercase"
-            color="gray.300"
-            ml={[0, 0, 'auto']}
-            opacity={loading ? 0 : 1}
-            transition="opacity 0.33s"
+          <Flex
+            mb={3.5}
+            alignItems={['left', 'left', 'center']}
+            direction={['column', 'column', 'row']}
           >
-            {weeklySnxTotal}/50,000 SNX
-          </Text>
-        </Flex>
-        <Progress
-          color="#00D1FF"
-          background="#001C22"
-          size="lg"
-          value={(weeklySnxTotal / 50000) * 100}
-          borderRadius="sm"
-          isIndeterminate={loading}
-        />
-      </Box>
+            <Heading size="md" fontWeight="semibold" mb={[2, 2, 0]}>
+              Distribution Estimate for Week {selectedWeek + 1} (
+              {format(filteredWeeks[selectedWeek].start, 'M/dd')} -{' '}
+              {format(filteredWeeks[selectedWeek].end, 'M/dd')})
+            </Heading>
+            <Text
+              fontSize="md"
+              fontWeight="medium"
+              textTransform="uppercase"
+              color="gray.300"
+              ml={[0, 0, 'auto']}
+              opacity={loading ? 0 : 1}
+              transition="opacity 0.33s"
+            >
+              {weeklySnxTotal}/50,000 SNX
+            </Text>
+          </Flex>
+          <Progress
+            color="#00D1FF"
+            background="#001C22"
+            size="lg"
+            value={(weeklySnxTotal / 50000) * 100}
+            borderRadius="sm"
+            isIndeterminate={loading}
+          />
+        </Box>
+      )}
 
       <Flex w="100%" gap={6} direction={['column', 'column', 'row']}>
         <InputGroup size="sm" bg="black">
@@ -218,10 +229,14 @@ const Home = () => {
         </InputGroup>
 
         <Box ml={[0, 0, 'auto']} minWidth={['none', 'none', '200px']}>
-          <Select size="sm" bg="black" value={selectedWeek}
+          <Select
+            size="sm"
+            bg="black"
+            value={selectedWeek}
             onChange={(event: ChangeEvent<HTMLSelectElement>) =>
               setSelectedWeek(Number(event.target.value))
-            }>
+            }
+          >
             {filteredWeeks.map((week, ind) => {
               return (
                 <option value="ind">

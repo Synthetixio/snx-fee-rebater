@@ -92,7 +92,7 @@ export function DataTable<Data extends object>({ data }: any) {
                   )}
                   {header.column.id === 'estimatedDistribution' && (
                     <Tooltip label={`This is based on an SNX price of $${0}`}>
-                      <InfoOutlineIcon ml={1} />
+                      <InfoOutlineIcon transform="translateY(-0.5px)" ml={1} />
                     </Tooltip>
                   )}
                   <chakra.span pl="1">
