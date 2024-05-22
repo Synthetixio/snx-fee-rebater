@@ -201,7 +201,7 @@ const Home = () => {
             direction={['column', 'column', 'row']}
           >
             <Heading size="md" fontWeight="semibold" mb={[2, 2, 0]}>
-              Distribution Estimate for Week {selectedWeek + 1} (
+              Distribution Estimate for Week {filteredWeeks.length - selectedWeek} (
               {format(filteredWeeks[selectedWeek].start, 'M/dd')} -{' '}
               {format(filteredWeeks[selectedWeek].end, 'M/dd')})
             </Heading>
@@ -214,7 +214,7 @@ const Home = () => {
               opacity={loading ? 0 : 1}
               transition="opacity 0.33s"
             >
-              {weeklySnxTotal}/50,000 SNX
+              {weeklySnxTotal.toLocaleString()}/50,000 SNX
             </Text>
           </Flex>
           <Progress
@@ -254,8 +254,8 @@ const Home = () => {
           >
             {filteredWeeks.map((week, ind) => {
               return (
-                <option value="ind">
-                  Week {ind + 1} ({format(week.start, 'M/dd')} -{' '}
+                <option value={ind}>
+                  Week {filteredWeeks.length - ind} ({format(week.start, 'M/dd')} -{' '}
                   {format(week.end, 'M/dd')})
                 </option>
               );
