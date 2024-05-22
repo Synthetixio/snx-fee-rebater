@@ -47,7 +47,7 @@ const generateWeeks = (startDate: Date, numberOfWeeks: number) => {
 };
 
 // Initial start date
-const initialStartDate = new Date(Date.UTC(2024, 4, 4, 20, 0, 0));
+const initialStartDate = new Date(Date.UTC(2024, 4, 5, 20, 0, 0));
 
 // Generate 100 weeks
 const weeks = generateWeeks(initialStartDate, 100);
@@ -67,12 +67,24 @@ const Home = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [weeklySnxTotal, setWeeklySnxTotal] = useState<number>(0);
   const [selectedWeek, setSelectedWeek] = useState<number>(0);
+  const [snxPrice, setSnxPrice] = useState(2.5);
 
   useEffect(() => {
-    console.log('RUNNING', selectedWeek, filteredWeeks);
+    const fetchPrice = async () => {
+      const response = await fetch(
+        'https://api.coingecko.com/api/v3/simple/price?ids=synthetix&vs_currencies=usd'
+      );
+      const data = await response.json();
+      console.log('DATA', data);
+      setSnxPrice(data.synthetix.usd);
+    };
+
+    fetchPrice();
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       if (!filteredWeeks[selectedWeek]) {
-        console.log('ABORTING');
         setLoading(false);
         return;
       }
@@ -89,7 +101,8 @@ const Home = () => {
         const response = await fetch(url.toString());
         const data = await response.json();
         const { processedData, totalSnxDistribution } = (await processData(
-          data
+          data,
+          snxPrice
         )) as any;
         setTableData(processedData);
         setWeeklySnxTotal(Math.floor(totalSnxDistribution));
@@ -100,7 +113,7 @@ const Home = () => {
     };
 
     fetchData();
-  }, [selectedWeek]);
+  }, [selectedWeek, snxPrice]);
 
   useEffect(() => {
     tableData.filter((row: any) => {

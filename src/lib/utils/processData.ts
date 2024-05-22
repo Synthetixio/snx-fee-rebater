@@ -41,7 +41,8 @@ interface FetchedData {
 const FEE_PERCENTAGE = 0.9;
 
 export const processData = async (
-  fetchedData: FetchedData[]
+  fetchedData: FetchedData[],
+  snxPrice: number
 ): Promise<object> => {
   const accountOwnerCache: { [accountId: string]: string } = {};
 
@@ -81,7 +82,7 @@ export const processData = async (
     if (!Number.isNaN(exchangeFees)) {
       walletData[walletAddress].feesPaid += exchangeFees;
       const estimatedFeeDistribution = exchangeFees * FEE_PERCENTAGE;
-      const snxDistribution = estimatedFeeDistribution / 2.5;
+      const snxDistribution = estimatedFeeDistribution / snxPrice;
       totalSnxDistribution += snxDistribution;
       walletData[walletAddress].estimatedDistribution += snxDistribution;
     } else {
