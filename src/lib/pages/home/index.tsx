@@ -195,7 +195,7 @@ const Home = () => {
           color="#00D1FF"
           background="#001C22"
           size="lg"
-          value={weeklySnxTotal}
+          value={(weeklySnxTotal / 50000) * 100}
           borderRadius="sm"
           isIndeterminate={loading}
         />
