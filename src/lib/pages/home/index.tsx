@@ -19,6 +19,7 @@ import { addWeeks, startOfWeek, endOfWeek, format, isBefore } from 'date-fns';
 import { useEffect } from 'react';
 
 import { DataTable } from '~/lib/components/DataTable';
+import { useFetchPrice } from '~/lib/utils/fetchPrice';
 
 // Helper function to format dates
 const formatDate = (date: Date): string =>
