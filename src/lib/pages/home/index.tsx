@@ -72,10 +72,9 @@ const Home = () => {
   useEffect(() => {
     const fetchPrice = async () => {
       const response = await fetch(
-        'https://api.coingecko.com/api/v3/simple/price?ids=synthetix&vs_currencies=usd'
+        'https://api.coingecko.com/api/v3/simple/price?ids=havven&vs_currencies=usd'
       );
       const data = await response.json();
-      console.log('DATA', data);
       setSnxPrice(data.synthetix.usd);
     };
 
@@ -297,7 +296,7 @@ const Home = () => {
             <Spinner m="auto" size="xl" color="#00D1FF" />
           </Flex>
         ) : (
-          <DataTable data={tableData} />
+          <DataTable data={tableData} price={snxPrice} />
         )}
       </Box>
     </Flex>
