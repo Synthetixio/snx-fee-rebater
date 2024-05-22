@@ -9,22 +9,28 @@ export type DataTableProps<Data extends object> = {
   data: Data[];
 };
 
-export function DataTable<Data extends object>({ data }: DataTableProps<Data>) {
-  const columnHelper = createColumnHelper<Data>();
+export function DataTable<Data extends object>({ data }: any) {
+  type TableRowData = {
+    address: string;
+    paid: number;
+    distribution: number;
+  };
+
+  const columnHelper = createColumnHelper<TableRowData>();
 
   const columns = [
-    columnHelper.accessor('walletAddress', {
+    columnHelper.accessor('address', {
       cell: (info) => info.getValue(),
       header: 'Wallet Address',
     }),
-    columnHelper.accessor('feesPaid', {
+    columnHelper.accessor('paid', {
       cell: (info) => Number(info.getValue()).toFixed(2),
       header: 'Fees Paid',
       meta: {
         isNumeric: true,
       },
     }),
-    columnHelper.accessor('estimatedDistribution', {
+    columnHelper.accessor('distribution', {
       cell: (info) => Number(info.getValue()).toFixed(2),
       header: 'Estimated Distribution',
       meta: {
@@ -45,8 +51,11 @@ export function DataTable<Data extends object>({ data }: DataTableProps<Data>) {
     },
   });
 
+  console.log('rerendering')
+
   return (
     <Table size="sm">
+
       <Thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <Tr key={headerGroup.id}>
@@ -78,6 +87,7 @@ export function DataTable<Data extends object>({ data }: DataTableProps<Data>) {
           </Tr>
         ))}
       </Thead>
+
       <Tbody>
         {table.getRowModel().rows.map((row) => (
           <Tr key={row.id}>
@@ -92,6 +102,7 @@ export function DataTable<Data extends object>({ data }: DataTableProps<Data>) {
           </Tr>
         ))}
       </Tbody>
+      
     </Table>
   );
 }

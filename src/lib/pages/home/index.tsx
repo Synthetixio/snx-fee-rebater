@@ -79,6 +79,24 @@ const Home = () => {
     fetchData();
   }, []);
 
+  const data = [
+    {
+      address: '0x123',
+      paid: 25.4,
+      distribution: 25.4,
+    },
+    {
+      address: '0x123',
+      paid: 25.4,
+      distribution: 30.48,
+    },
+    {
+      address: '0x123',
+      paid: 25.4,
+      distribution: 0.91444,
+    },
+  ];
+
   return (
     <Flex direction="column" minHeight="70vh" gap={6} mb={6} w="full">
       <Flex gap={6} direction={['column', 'column', 'row']}>
@@ -154,7 +172,7 @@ const Home = () => {
           direction={['column', 'column', 'row']}
         >
           <Heading size="md" fontWeight="semibold">
-            Total Distribution for Week X (X/X - X/X)
+            Distribution Estimate for Week X (X/X - X/X)
           </Heading>
           <Text
             fontSize="md"
@@ -202,7 +220,7 @@ const Home = () => {
         borderRadius="md"
         overflow="auto"
       >
-        <DataTable data={tableData} />
+        <DataTable data={data} />
       </Box>
     </Flex>
   );
