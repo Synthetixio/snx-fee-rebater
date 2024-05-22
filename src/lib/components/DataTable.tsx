@@ -144,7 +144,8 @@ export function DataTable({ data }: any) {
                       _hover={{ textDecoration: 'none' }}
                       bg="none"
                       as={Link}
-                      href={cell.getValue() as string}
+                      isExternal
+                      href={`https://basescan.org/address/${cell.getValue() as string}`}
                     >
                       {(cell.getValue() as string).substring(0, 6)}...
                       {(cell.getValue() as string).slice(-4)}
