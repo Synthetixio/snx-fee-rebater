@@ -215,7 +215,7 @@ const Home = () => {
       </Box>
 
       <Flex w="100%" gap={6} direction={['column', 'column', 'row']}>
-        <InputGroup bg="black">
+        <InputGroup size="sm" bg="black">
           <InputLeftElement pointerEvents="none">
             <SearchIcon color="gray.500" />
           </InputLeftElement>
@@ -230,12 +230,10 @@ const Home = () => {
         </InputGroup>
 
         <Box ml={[0, 0, 'auto']} minWidth={['none', 'none', '200px']}>
-          <Select bg="black">
-            <option selected value="option1">
-              Week X (X/X - X/X)
-            </option>
-            <option value="option2">Week X (X/X - X/X)</option>
-            <option value="option3">Week X (X/X - X/X)</option>
+          <Select size="sm" bg="black">
+            {filteredWeeks.map((week, ind)=>{
+              return <option value="ind">Week {ind+1} ({format(week.start, 'M/dd')} - {format(week.end, 'M/dd')})</option>
+            })}
           </Select>
         </Box>
       </Flex>
@@ -250,7 +248,7 @@ const Home = () => {
       >
         {loading ? (
           <Flex py={12}>
-            <Spinner m="auto" size="xl" />
+            <Spinner m="auto" size="xl" color="#00D1FF" />
           </Flex>
         ) : (
           <DataTable data={data} />
