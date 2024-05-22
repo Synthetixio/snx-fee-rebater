@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 import { NextResponse } from 'next/server';
+
 import pool from '../../db';
 
 export const GET = async (req: any, res: any) => {

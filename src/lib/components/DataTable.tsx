@@ -1,61 +1,30 @@
 'use client';
 
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
-import { Table, Thead, Tbody, Tr, Th, Td, chakra, Tooltip } from '@chakra-ui/react';
-import type { ColumnDef, SortingState } from '@tanstack/react-table';
-import {
-  useReactTable,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  createColumnHelper,
-} from '@tanstack/react-table';
+import { Table, Thead, Tbody, Tr, Th, Td, chakra } from '@chakra-ui/react';
+import { useReactTable, flexRender, getCoreRowModel, getSortedRowModel, createColumnHelper } from '@tanstack/react-table';
 import * as React from 'react';
 
 export type DataTableProps<Data extends object> = {
   data: Data[];
 };
 
-export function DataTable<Data extends object>({}: any) {
-  type UnitConversion = {
-    fromUnit: string;
-    toUnit: string;
-    factor: number;
-  };
-
-  const data: UnitConversion[] = [
-    {
-      fromUnit: 'inches',
-      toUnit: 'millimetres (mm)',
-      factor: 25.4,
-    },
-    {
-      fromUnit: 'feet',
-      toUnit: 'centimetres (cm)',
-      factor: 30.48,
-    },
-    {
-      fromUnit: 'yards',
-      toUnit: 'metres (m)',
-      factor: 0.91444,
-    },
-  ];
-
-  const columnHelper = createColumnHelper<UnitConversion>();
+export function DataTable<Data extends object>({ data }: DataTableProps<Data>) {
+  const columnHelper = createColumnHelper<Data>();
 
   const columns = [
-    columnHelper.accessor('fromUnit', {
+    columnHelper.accessor('walletAddress', {
       cell: (info) => info.getValue(),
       header: 'Wallet Address',
     }),
-    columnHelper.accessor('toUnit', {
+    columnHelper.accessor('feesPaid', {
       cell: (info) => info.getValue(),
       header: 'Fees Paid',
       meta: {
         isNumeric: true,
       },
     }),
-    columnHelper.accessor('factor', {
+    columnHelper.accessor('estimatedDistribution', {
       cell: (info) => info.getValue(),
       header: 'Estimated Distribution',
       meta: {
@@ -82,7 +51,6 @@ export function DataTable<Data extends object>({}: any) {
         {table.getHeaderGroups().map((headerGroup) => (
           <Tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
-              // see https://tanstack.com/table/v8/docs/api/core/column-def#meta to type this correctly
               const { meta } = header.column.columnDef;
               return (
                 <Th
@@ -95,7 +63,6 @@ export function DataTable<Data extends object>({}: any) {
                     header.column.columnDef.header,
                     header.getContext()
                   )}
-
                   <chakra.span pl="4">
                     {header.column.getIsSorted() ? (
                       header.column.getIsSorted() === 'desc' ? (
@@ -115,7 +82,6 @@ export function DataTable<Data extends object>({}: any) {
         {table.getRowModel().rows.map((row) => (
           <Tr key={row.id}>
             {row.getVisibleCells().map((cell) => {
-              // see https://tanstack.com/table/v8/docs/api/core/column-def#meta to type this correctly
               const { meta } = cell.column.columnDef;
               return (
                 <Td key={cell.id} isNumeric={meta?.isNumeric}>

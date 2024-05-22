@@ -21,12 +21,11 @@ import {
   endOfWeek,
   format,
   isBefore,
-  set,
 } from 'date-fns';
 import { useEffect, useState } from 'react';
 
 import { DataTable } from '~/lib/components/DataTable';
-import { useFetchPrice } from '~/lib/utils/fetchPrice';
+import { processData, ProcessedData } from '~/lib/utils/processData';
 
 // Helper function to format dates
 const formatDate = (date: Date): string =>
@@ -64,36 +63,22 @@ const filteredWeeks = weeks.filter((week) => {
 });
 
 const Home = () => {
-  const [tableData, setTableData] = useState();
+  const [tableData, setTableData] = useState<ProcessedData[]>([]);
   useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await fetch('/api/data');
-      const data = await response.json();
-      setTableData(data);
-      console.log('DATA', data);
-    };
-
-    fetchUsers();
-
-    /*
-    const fetchFees = async () => {
+    const fetchData = async () => {
       try {
-        const users = await fetchUsers(); // Use the fetchUsers function to get the data
-        const feesData = users.map((user) => ({
-          accountId: user.account_id,
-          date: user.day,
-          exchangeFees: parseFloat(user.exchange_fees).toFixed(2), // Ensure the fees are formatted as numbers with two decimal places
-        }));
-
-        console.log('Fees Data', feesData);
-        return feesData;
+        const response = await fetch('/api/data');
+        const data = await response.json();
+        const processedData = await processData(data);
+        setTableData(processedData);
       } catch (error) {
-        console.error('Error fetching fees:', error.message);
-        throw error; // Re-throw the error to handle it further up the call stack if necessary
+        console.error('Error fetching data:', error);
       }
     };
-    */
+
+    fetchData();
   }, []);
+
   return (
     <Flex direction="column" minHeight="70vh" gap={6} mb={6} w="full">
       <Flex gap={6} direction={['column', 'column', 'row']}>
