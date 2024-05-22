@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import { ethers } from 'ethers';
-// import { fetchPriceData } from './fetchPrice';
 
 // Define the ProcessedData type
 export interface ProcessedData {
@@ -23,9 +22,9 @@ const perpsMarketProxyABI = [
     type: 'function',
   },
 ];
-const perpsMarketProxyAddress = '0x0A2AF931eFFd34b81ebcc57E3d3c9B1E1dE1C9Ce';
+const perpsMarketProxyAddress = '0x0A2AF931eFFd34b81ebcc57E3d3c9B1E1dE1C9Ce'; // base mainnet
 
-const provider = new ethers.JsonRpcProvider('https://base.llamarpc.com');
+const provider = new ethers.JsonRpcProvider(process.env.BASE_RPC_URL);
 const perpsMarketProxy = new ethers.Contract(
   perpsMarketProxyAddress,
   perpsMarketProxyABI,
