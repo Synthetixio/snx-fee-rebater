@@ -82,6 +82,7 @@ export function DataTable<Data extends object>({ data }: any) {
                   onClick={header.column.getToggleSortingHandler()}
                   pt={3}
                   pb={2.5}
+                  isNumeric={header.column.id !== 'walletAddress'}
                 >
                   {flexRender(
                     header.column.columnDef.header,
@@ -126,6 +127,7 @@ export function DataTable<Data extends object>({ data }: any) {
                       ? 'none'
                       : undefined
                   }
+                  isNumeric={cell.column.id !== 'walletAddress'}
                 >
                   {cell.column.id === 'walletAddress' ? (
                     <Code
