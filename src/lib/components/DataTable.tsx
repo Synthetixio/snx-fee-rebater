@@ -1,8 +1,23 @@
 'use client';
 
 import { ChevronUpIcon, ChevronDownIcon, UpDownIcon } from '@chakra-ui/icons';
-import { Table, Thead, Tbody, Tr, Th, Td, chakra, Flex } from '@chakra-ui/react';
-import { useReactTable, flexRender, getCoreRowModel, getSortedRowModel, createColumnHelper } from '@tanstack/react-table';
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  chakra,
+  Flex,
+} from '@chakra-ui/react';
+import {
+  useReactTable,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  createColumnHelper,
+} from '@tanstack/react-table';
 import * as React from 'react';
 
 export type DataTableProps<Data extends object> = {
@@ -11,26 +26,26 @@ export type DataTableProps<Data extends object> = {
 
 export function DataTable<Data extends object>({ data }: any) {
   type TableRowData = {
-    address: string;
-    paid: number;
-    distribution: number;
+    walletAddress: string;
+    feesPaid: number;
+    estimatedDistribution: number;
   };
 
   const columnHelper = createColumnHelper<TableRowData>();
 
   const columns = [
-    columnHelper.accessor('address', {
+    columnHelper.accessor('walletAddress', {
       cell: (info) => info.getValue(),
       header: 'Wallet Address',
     }),
-    columnHelper.accessor('paid', {
+    columnHelper.accessor('feesPaid', {
       cell: (info) => Number(info.getValue()).toFixed(2),
       header: 'Fees Paid',
       meta: {
         isNumeric: true,
       },
     }),
-    columnHelper.accessor('distribution', {
+    columnHelper.accessor('estimatedDistribution', {
       cell: (info) => Number(info.getValue()).toFixed(2),
       header: 'Estimated Distribution',
       meta: {
@@ -39,7 +54,9 @@ export function DataTable<Data extends object>({ data }: any) {
     }),
   ];
 
-  const [sorting, setSorting] = React.useState<SortingState>([{id: "distribution", desc: true}]);
+  const [sorting, setSorting] = React.useState<SortingState>([
+    { id: 'estimatedDistribution', desc: true },
+  ]);
   const table = useReactTable({
     columns,
     data,
@@ -74,12 +91,21 @@ export function DataTable<Data extends object>({ data }: any) {
                   <chakra.span pl="1">
                     {header.column.getIsSorted() ? (
                       header.column.getIsSorted() === 'desc' ? (
-                        <ChevronDownIcon transform="scale(1.5) translateY(1.5px)" aria-label="sorted descending" />
+                        <ChevronDownIcon
+                          transform="scale(1.5) translateY(1.5px)"
+                          aria-label="sorted descending"
+                        />
                       ) : (
-                        <ChevronUpIcon transform="scale(1.5) translateY(-2px)" aria-label="sorted ascending" />
+                        <ChevronUpIcon
+                          transform="scale(1.5) translateY(-2px)"
+                          aria-label="sorted ascending"
+                        />
                       )
                     ) : (
-                        <UpDownIcon transform="translateY(-1px)" aria-label="unsorted" />
+                      <UpDownIcon
+                        transform="translateY(-1px)"
+                        aria-label="unsorted"
+                      />
                     )}
                   </chakra.span>
                 </Th>
@@ -95,17 +121,24 @@ export function DataTable<Data extends object>({ data }: any) {
             {row.getVisibleCells().map((cell) => {
               const { meta } = cell.column.columnDef;
               return (
-                <Td key={cell.id} isNumeric={meta?.isNumeric} borderBottom={ind == table.getRowModel().rows.length - 1 ? 'none' : undefined}>
+                <Td
+                  key={cell.id}
+                  isNumeric={meta?.isNumeric}
+                  borderBottom={
+                    ind == table.getRowModel().rows.length - 1
+                      ? 'none'
+                      : undefined
+                  }
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  {cell.column.id == 'paid' && ' USDC'}
-                  {cell.column.id == 'distribution' && ' SNX'}
+                  {cell.column.id == 'feesPaid' && ' USDC'}
+                  {cell.column.id == 'estimatedDistribution' && ' SNX'}
                 </Td>
               );
             })}
           </Tr>
         ))}
       </Tbody>
-      
     </Table>
   );
 }

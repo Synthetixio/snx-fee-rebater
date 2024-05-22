@@ -70,6 +70,7 @@ const Home = () => {
         const data = await response.json();
         const processedData = await processData(data);
         setTableData(processedData);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -78,27 +79,11 @@ const Home = () => {
     fetchData();
   }, []);
 
-  let data = [
-    {
-      address: '0x123',
-      paid: 25.4,
-      distribution: 25.4,
-    },
-    {
-      address: '0x123',
-      paid: 25.4,
-      distribution: 30.48,
-    },
-    {
-      address: '0x123',
-      paid: 25.4,
-      distribution: 0.91444,
-    },
-  ];
-
-  data = data.filter((row) => {
-    return row.address.includes(filter);
-  });
+  useEffect(() => {
+    tableData.filter((row) => {
+      return row.walletAddress.includes(filter);
+    });
+  }, [filter, tableData]);
 
   return (
     <Flex direction="column" minHeight="70vh" gap={6} mb={6} w="full">
@@ -231,8 +216,13 @@ const Home = () => {
 
         <Box ml={[0, 0, 'auto']} minWidth={['none', 'none', '200px']}>
           <Select size="sm" bg="black">
-            {filteredWeeks.map((week, ind)=>{
-              return <option value="ind">Week {ind+1} ({format(week.start, 'M/dd')} - {format(week.end, 'M/dd')})</option>
+            {filteredWeeks.map((week, ind) => {
+              return (
+                <option value="ind">
+                  Week {ind + 1} ({format(week.start, 'M/dd')} -{' '}
+                  {format(week.end, 'M/dd')})
+                </option>
+              );
             })}
           </Select>
         </Box>
@@ -251,7 +241,7 @@ const Home = () => {
             <Spinner m="auto" size="xl" color="#00D1FF" />
           </Flex>
         ) : (
-          <DataTable data={data} />
+          <DataTable data={tableData} />
         )}
       </Box>
     </Flex>

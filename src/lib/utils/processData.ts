@@ -33,6 +33,8 @@ interface FetchedData {
   exchange_fees: number;
 }
 
+const FEE_PERCENTAGE = 0.9;
+
 export const processData = async (
   fetchedData: FetchedData[]
 ): Promise<ProcessedData[]> => {
@@ -72,7 +74,9 @@ export const processData = async (
 
     if (!isNaN(exchangeFees)) {
       walletData[walletAddress].feesPaid += exchangeFees;
-      walletData[walletAddress].estimatedDistribution += exchangeFees; // Modify this line with actual logic for estimated distribution
+      const estimatedFeeDistribution = exchangeFees * FEE_PERCENTAGE;
+      const snxDistribution = estimatedFeeDistribution / 2.5;
+      walletData[walletAddress].estimatedDistribution += snxDistribution;
     } else {
       console.error(
         `Invalid exchange fee for account ${data.account_id}:`,
