@@ -221,8 +221,8 @@ const Home = () => {
             <Heading size="md" fontWeight="semibold" mb={[2, 2, 0]}>
               Distribution Estimate for Week{' '}
               {filteredWeeks.length - selectedWeek} (
-              {format(filteredWeeks[selectedWeek].start, 'M/dd')} -{' '}
-              {format(filteredWeeks[selectedWeek].end, 'M/dd')})
+              {format(filteredWeeks[selectedWeek].start, 'M/d')} -{' '}
+              {format(filteredWeeks[selectedWeek].end, 'M/d')})
             </Heading>
             <Text
               fontSize="md"
@@ -274,8 +274,8 @@ const Home = () => {
             {filteredWeeks.map((week, ind) => {
               return (
                 <option value={ind}>
-                  Week {filteredWeeks.length - ind} (
-                  {format(week.start, 'M/dd')} - {format(week.end, 'M/dd')})
+                  Week {filteredWeeks.length - ind} ({format(week.start, 'M/d')}{' '}
+                  - {format(week.end, 'M/d')})
                 </option>
               );
             })}
