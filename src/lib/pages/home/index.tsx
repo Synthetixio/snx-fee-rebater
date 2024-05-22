@@ -64,7 +64,23 @@ const Home = () => {
       console.log('DATA', data);
     };
 
-    fetchUsers();
+    const fetchFees = async () => {
+      try {
+        const users = await fetchUsers(); // Use the fetchUsers function to get the data
+        const feesData = users.map((user) => ({
+          accountId: user.account_id,
+          date: user.day,
+          exchangeFees: parseFloat(user.exchange_fees).toFixed(2), // Ensure the fees are formatted as numbers with two decimal places
+        }));
+
+        console.log('Fees Data', feesData);
+        return feesData;
+      } catch (error) {
+        console.error('Error fetching fees:', error.message);
+        throw error; // Re-throw the error to handle it further up the call stack if necessary
+      }
+    };
+
   }, []);
   return (
     <Flex direction="column" minHeight="70vh" gap={8} mb={8} w="full">
