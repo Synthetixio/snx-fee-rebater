@@ -9,11 +9,11 @@ import {
   InputLeftElement,
   Select,
   Heading,
-  ListItem,
+  Text,
   Link,
-  UnorderedList,
   CircularProgress,
   CircularProgressLabel,
+  Progress,
 } from '@chakra-ui/react';
 import { addWeeks, startOfWeek, endOfWeek, format, isBefore } from 'date-fns';
 import { useEffect } from 'react';
@@ -83,8 +83,8 @@ const Home = () => {
 
   }, []);
   return (
-    <Flex direction="column" minHeight="70vh" gap={8} mb={8} w="full">
-      <Flex gap={8}>
+    <Flex direction="column" minHeight="70vh" gap={6} mb={6} w="full">
+      <Flex gap={6}>
         <Box
           color="gray.300"
           bg="black"
@@ -93,31 +93,24 @@ const Home = () => {
           p={6}
           borderRadius="md"
         >
-          <Heading size="md" fontWeight="semibold" mb={4}>
-            Synthetix is rebating trading fees on Base
+          <Heading size="md" fontWeight="semibold" mb={3}>
+            Synthetix is rebating a share of fees on Base
           </Heading>
-          <UnorderedList>
-            <ListItem mb={2}>
-              Synthetix is rebating 90% of accounts' trading fees spent using Synthetix’s
-              perpetual futures markets on Base with 500,000 SNX allocated by
-              the Treasury Council.
-            </ListItem>
-            <ListItem mb={2}>
-              50,000 SNX will be rebated each week on a first-come, first-served
-              basis, starting May 22nd. Read more in&nbsp;
-              <Link
-                _hover={{ textDecor: 'none', borderColor:"gray.500"}}
-                borderBottom="1px solid"
-                borderColor="gray.600"
-                href="https://blog.synthetix.io/snx-perps-trading-incentives-on-base/"
-              >
-                this blog post
-              </Link>.
-            </ListItem>
-            <ListItem>
-              Use this tool to see an estimate of the SNX distribution.
-            </ListItem>
-          </UnorderedList>
+          <Text mb={2}>
+            Synthetix is rebating trading fees from the perpetual futures
+            markets deployed to Base with 500,000 SNX allocated by the Treasury
+            Council. Read about the specifics in&nbsp;
+            <Link
+              _hover={{ textDecor: 'none', borderColor: 'gray.500' }}
+              borderBottom="1px solid"
+              borderColor="gray.600"
+              href="https://blog.synthetix.io/snx-perps-trading-incentives-on-base/"
+            >
+              this blog post
+            </Link>
+            .
+          </Text>
+          <Text>Use this tool to see an estimate of the distributions.</Text>
         </Box>
 
         <Box
@@ -125,17 +118,29 @@ const Home = () => {
           bg="black"
           border="1px solid"
           borderColor="whiteAlpha.300"
-          p={6}
+          p={3}
           borderRadius="md"
-          minWidth="240px"
+          minWidth="200px"
         >
-          <Heading size="md" fontWeight="semibold" mb={4}>Total Distributed</Heading>
-          <CircularProgress value={40} trackColor="#001C22" color="#00D1FF" size='100%' thickness='6px'>
-            <CircularProgressLabel fontSize="md" fontWeight="medium" letterSpacing="0.1rem" textTransform="uppercase">123,302 SNX</CircularProgressLabel>
+          <CircularProgress
+            value={40}
+            trackColor="#001C22"
+            color="#00D1FF"
+            size="100%"
+            thickness="6px"
+          >
+            <CircularProgressLabel>
+              <Text fontSize="md" fontWeight="medium" textTransform="uppercase">
+                123,302 SNX
+              </Text>
+              <Text fontSize="xs" fontWeight="bold" color="gray.300">
+                Total Distributed
+              </Text>
+            </CircularProgressLabel>
           </CircularProgress>
         </Box>
       </Flex>
-      <Flex w="100%" gap={8}>
+      <Flex w="100%" gap={6}>
         <InputGroup bg="black">
           <InputLeftElement pointerEvents="none">
             <SearchIcon color="gray.500" />
@@ -143,7 +148,7 @@ const Home = () => {
           <Input type="tel" placeholder="Filter by wallet address" />
         </InputGroup>
 
-        <Box ml="auto" minWidth="240px">
+        <Box ml="auto" minWidth="200px">
           <Select bg="black">
             <option selected value="option1">
               Week X (X/X - X/X)
@@ -153,6 +158,23 @@ const Home = () => {
           </Select>
         </Box>
       </Flex>
+
+      <Box
+        color="gray.300"
+        bg="black"
+        border="1px solid"
+        borderColor="whiteAlpha.300"
+        p={6}
+        borderRadius="md"
+      >
+        <Flex>
+        <Heading size="md" fontWeight="semibold" mb={3}>
+          Total Distribution for Week X (X/X - X/X)
+        </Heading>
+          <Text fontSize="xs" fontWeight="bold" color="gray.300"  ml="auto">23,245/50,000 SNX</Text>
+        </Flex>
+        <Progress color='#00D1FF' background="#001C22" size='lg' value={20} borderRadius="sm" />
+      </Box>
       <DataTable data={[]} columns={[]} />
     </Flex>
   );
