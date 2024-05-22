@@ -18,14 +18,14 @@ export function DataTable<Data extends object>({ data }: DataTableProps<Data>) {
       header: 'Wallet Address',
     }),
     columnHelper.accessor('feesPaid', {
-      cell: (info) => info.getValue(),
+      cell: (info) => Number(info.getValue()).toFixed(2),
       header: 'Fees Paid',
       meta: {
         isNumeric: true,
       },
     }),
     columnHelper.accessor('estimatedDistribution', {
-      cell: (info) => info.getValue(),
+      cell: (info) => Number(info.getValue()).toFixed(2),
       header: 'Estimated Distribution',
       meta: {
         isNumeric: true,

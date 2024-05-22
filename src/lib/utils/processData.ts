@@ -7,7 +7,6 @@ export interface ProcessedData {
   estimatedDistribution: number;
 }
 
-// Assuming the contract ABI and address are available
 const perpsMarketProxyABI = [
   {
     constant: true,
@@ -65,14 +64,21 @@ export const processData = async (
 
   fetchedData.forEach((data, index) => {
     const walletAddress = walletAddresses[index];
-    const exchangeFees = data.exchange_fees;
+    const exchangeFees = Number(data.exchange_fees);
 
     if (!walletData[walletAddress]) {
       walletData[walletAddress] = { feesPaid: 0, estimatedDistribution: 0 };
     }
 
-    walletData[walletAddress].feesPaid += exchangeFees;
-    walletData[walletAddress].estimatedDistribution += exchangeFees; // Modify this line with actual logic for estimated distribution
+    if (!isNaN(exchangeFees)) {
+      walletData[walletAddress].feesPaid += exchangeFees;
+      walletData[walletAddress].estimatedDistribution += exchangeFees; // Modify this line with actual logic for estimated distribution
+    } else {
+      console.error(
+        `Invalid exchange fee for account ${data.account_id}:`,
+        data.exchange_fees
+      );
+    }
   });
 
   return Object.keys(walletData).map((walletAddress) => ({
