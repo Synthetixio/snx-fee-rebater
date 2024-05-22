@@ -15,7 +15,14 @@ import {
   CircularProgressLabel,
   Progress,
 } from '@chakra-ui/react';
-import { addWeeks, startOfWeek, endOfWeek, format, isBefore, set } from 'date-fns';
+import {
+  addWeeks,
+  startOfWeek,
+  endOfWeek,
+  format,
+  isBefore,
+  set,
+} from 'date-fns';
 import { useEffect, useState } from 'react';
 
 import { DataTable } from '~/lib/components/DataTable';
@@ -86,7 +93,6 @@ const Home = () => {
       }
     };
     */
-
   }, []);
   return (
     <Flex direction="column" minHeight="70vh" gap={6} mb={6} w="full">
@@ -105,7 +111,7 @@ const Home = () => {
           <Text mb={2}>
             Synthetix is rebating trading fees from the perpetual futures
             markets deployed to Base with 500,000 SNX allocated by the Treasury
-            Council. Read about the specifics in&nbsp;
+            Council. Read about the criteria in&nbsp;
             <Link
               _hover={{ textDecor: 'none', borderColor: 'gray.500' }}
               borderBottom="1px solid"
@@ -146,6 +152,38 @@ const Home = () => {
           </CircularProgress>
         </Box>
       </Flex>
+
+      <Box
+        color="gray.300"
+        bg="black"
+        border="1px solid"
+        borderColor="whiteAlpha.300"
+        p={6}
+        borderRadius="md"
+      >
+        <Flex mb={3.5} alignItems="center">
+          <Heading size="md" fontWeight="semibold">
+            Total Distribution for Week X (X/X - X/X)
+          </Heading>
+          <Text
+            fontSize="md"
+            fontWeight="medium"
+            textTransform="uppercase"
+            color="gray.300"
+            ml="auto"
+          >
+            23,245/50,000 SNX
+          </Text>
+        </Flex>
+        <Progress
+          color="#00D1FF"
+          background="#001C22"
+          size="lg"
+          value={20}
+          borderRadius="sm"
+        />
+      </Box>
+
       <Flex w="100%" gap={6}>
         <InputGroup bg="black">
           <InputLeftElement pointerEvents="none">
@@ -170,27 +208,10 @@ const Home = () => {
         bg="black"
         border="1px solid"
         borderColor="whiteAlpha.300"
-        p={6}
-        borderRadius="md"
-      >
-        <Flex>
-        <Heading size="md" fontWeight="semibold" mb={3}>
-          Total Distribution for Week X (X/X - X/X)
-        </Heading>
-          <Text fontSize="xs" fontWeight="bold" color="gray.300"  ml="auto">23,245/50,000 SNX</Text>
-        </Flex>
-        <Progress color='#00D1FF' background="#001C22" size='lg' value={20} borderRadius="sm" />
-      </Box>
-
-      <Box
-        color="gray.300"
-        bg="black"
-        border="1px solid"
-        borderColor="whiteAlpha.300"
         borderRadius="md"
         overflow="auto"
       >
-      <DataTable data={tableData} />
+        <DataTable data={tableData} />
       </Box>
     </Flex>
   );
