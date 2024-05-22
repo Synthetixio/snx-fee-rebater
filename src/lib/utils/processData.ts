@@ -49,7 +49,9 @@ const multicallABI = [
   },
 ];
 
-const provider = new ethers.JsonRpcProvider(process.env.BASE_RPC_URL);
+const provider = new ethers.JsonRpcProvider(
+  process.env.NEXT_PUBLIC_BASE_RPC_URL
+);
 const perpsMarketProxy = new ethers.Contract(
   perpsMarketProxyAddress,
   perpsMarketProxyABI,
@@ -71,8 +73,6 @@ export const processData = async (
 ): Promise<object> => {
   const accountOwnerCache: { [accountId: string]: string } = {};
 
-  console.log(1);
-
   const getWalletAddresses = async (accountIds: number[]): Promise<void> => {
     const calls = accountIds.map((accountId) => ({
       target: perpsMarketProxyAddress,
@@ -82,13 +82,7 @@ export const processData = async (
       ),
     }));
 
-    console.log(4);
-
     const { returnData } = await multicall.aggregate(calls);
-
-    console.log(5);
-
-    console.log(calls, returnData);
 
     accountIds.forEach((accountId, index) => {
       try {
@@ -104,15 +98,9 @@ export const processData = async (
     });
   };
 
-  console.log(2, fetchedData);
-
   const uniqueAccountIds = fetchedData.map((data) => data.account_id);
 
-  console.log(3);
-
   await getWalletAddresses(uniqueAccountIds);
-
-  console.log(uniqueAccountIds);
 
   const walletData: {
     [walletAddress: string]: {
