@@ -158,10 +158,13 @@ export function DataTable({ data, price }: any) {
                       />
                     </Code>
                   ) : (
-                    cell.getContext().getValue().toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
+                    (cell.getContext().getValue() as number).toLocaleString(
+                      undefined,
+                      {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }
+                    )
                   )}
                   {cell.column.id === 'feesPaid' && ' USDC'}
                   {cell.column.id === 'estimatedDistribution' && ' SNX'}
