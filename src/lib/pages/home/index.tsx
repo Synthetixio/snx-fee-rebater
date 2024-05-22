@@ -56,13 +56,14 @@ const now = new Date();
 const filteredWeeks = weeks.filter((week) => {
   const startOfWeekDate = new Date(week.start);
   return isBefore(startOfWeekDate, now);
-});
+}).reverse();
 
 const Home = () => {
   const [tableData, setTableData] = useState<ProcessedData[]>([]);
   const [filter, setFilter] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [weeklySnxTotal, setWeeklySnxTotal] = useState<boolean>(true);
+  const [selectedWeek, setSelectedWeek] = useState<number>(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -177,7 +178,7 @@ const Home = () => {
           direction={['column', 'column', 'row']}
         >
           <Heading size="md" fontWeight="semibold" mb={[2, 2, 0]}>
-            Distribution Estimate for Week X (X/X - X/X)
+            Distribution Estimate for Week {selectedWeek + 1} ({format(filteredWeeks[selectedWeek].start, 'M/dd')} - {format(filteredWeeks[selectedWeek].end, 'M/dd')})
           </Heading>
           <Text
             fontSize="md"
@@ -217,7 +218,10 @@ const Home = () => {
         </InputGroup>
 
         <Box ml={[0, 0, 'auto']} minWidth={['none', 'none', '200px']}>
-          <Select size="sm" bg="black">
+          <Select size="sm" bg="black" value={selectedWeek}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              setSelectedWeek(event.target.value)
+            }>
             {filteredWeeks.map((week, ind) => {
               return (
                 <option value="ind">
