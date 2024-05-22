@@ -24,12 +24,40 @@ const perpsMarketProxyABI = [
 ];
 const perpsMarketProxyAddress = '0x0A2AF931eFFd34b81ebcc57E3d3c9B1E1dE1C9Ce'; // base mainnet
 
-const provider = new ethers.JsonRpcProvider(process.env.BASE_RPC_URL);
+const multicallAddress = '0xcA11bde05977b3631167028862bE2a173976CA11';
+const multicallABI = [
+  {
+    constant: true,
+    inputs: [
+      {
+        components: [
+          { name: 'target', type: 'address' },
+          { name: 'callData', type: 'bytes' },
+        ],
+        name: 'calls',
+        type: 'tuple[]',
+      },
+    ],
+    name: 'aggregate',
+    outputs: [
+      { name: 'blockNumber', type: 'uint256' },
+      { name: 'returnData', type: 'bytes[]' },
+    ],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+];
+
+const provider = new ethers.JsonRpcProvider(
+  process.env.NEXT_PUBLIC_BASE_RPC_URL
+);
 const perpsMarketProxy = new ethers.Contract(
   perpsMarketProxyAddress,
   perpsMarketProxyABI,
   provider
 );
+const multicall = new ethers.Contract(multicallAddress, multicallABI, provider);
 
 interface FetchedData {
   account_id: number;
@@ -45,22 +73,34 @@ export const processData = async (
 ): Promise<object> => {
   const accountOwnerCache: { [accountId: string]: string } = {};
 
-  const getWalletAddress = async (accountId: number): Promise<string> => {
-    if (!accountOwnerCache[accountId]) {
+  const getWalletAddresses = async (accountIds: number[]): Promise<void> => {
+    const calls = accountIds.map((accountId) => ({
+      target: perpsMarketProxyAddress,
+      callData: perpsMarketProxy.interface.encodeFunctionData(
+        'getAccountOwner',
+        [accountId]
+      ),
+    }));
+
+    const { returnData } = await multicall.aggregate(calls);
+
+    accountIds.forEach((accountId, index) => {
       try {
-        const owner = await perpsMarketProxy.getAccountOwner(accountId);
+        const [owner] = perpsMarketProxy.interface.decodeFunctionResult(
+          'getAccountOwner',
+          returnData[index]
+        );
         accountOwnerCache[accountId] = owner;
       } catch (error) {
-        console.error(`Error fetching owner for account ${accountId}:`, error);
-        accountOwnerCache[accountId] = 'Unknown'; // Handle missing or invalid accounts
+        console.error(`Error decoding owner for account ${accountId}:`, error);
+        accountOwnerCache[accountId] = 'Unknown';
       }
-    }
-    return accountOwnerCache[accountId];
+    });
   };
 
-  const walletAddresses = await Promise.all(
-    fetchedData.map((data) => getWalletAddress(data.account_id))
-  );
+  const uniqueAccountIds = fetchedData.map((data) => data.account_id);
+
+  await getWalletAddresses(uniqueAccountIds);
 
   const walletData: {
     [walletAddress: string]: {
@@ -70,8 +110,8 @@ export const processData = async (
   } = {};
 
   let totalSnxDistribution = 0;
-  fetchedData.forEach((data, index) => {
-    const walletAddress = walletAddresses[index];
+  fetchedData.forEach((data) => {
+    const walletAddress = accountOwnerCache[data.account_id];
     const exchangeFees = Number(data.exchange_fees);
 
     if (!walletData[walletAddress]) {
