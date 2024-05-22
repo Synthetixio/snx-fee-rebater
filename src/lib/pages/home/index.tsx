@@ -15,17 +15,12 @@ import {
   CircularProgressLabel,
   Progress,
 } from '@chakra-ui/react';
-import {
-  addWeeks,
-  startOfWeek,
-  endOfWeek,
-  format,
-  isBefore,
-} from 'date-fns';
+import { addWeeks, startOfWeek, endOfWeek, format, isBefore } from 'date-fns';
 import { useEffect, useState } from 'react';
 
 import { DataTable } from '~/lib/components/DataTable';
-import { processData, ProcessedData } from '~/lib/utils/processData';
+import type { ProcessedData } from '~/lib/utils/processData';
+import { processData } from '~/lib/utils/processData';
 
 // Helper function to format dates
 const formatDate = (date: Date): string =>
@@ -64,6 +59,8 @@ const filteredWeeks = weeks.filter((week) => {
 
 const Home = () => {
   const [tableData, setTableData] = useState<ProcessedData[]>([]);
+  const [filter, setFilter] = useState<string>('');
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -79,7 +76,7 @@ const Home = () => {
     fetchData();
   }, []);
 
-  const data = [
+  let data = [
     {
       address: '0x123',
       paid: 25.4,
@@ -96,6 +93,10 @@ const Home = () => {
       distribution: 0.91444,
     },
   ];
+
+  data = data.filter((row) => {
+    return row.address.includes(filter);
+  });
 
   return (
     <Flex direction="column" minHeight="70vh" gap={6} mb={6} w="full">
@@ -198,7 +199,14 @@ const Home = () => {
           <InputLeftElement pointerEvents="none">
             <SearchIcon color="gray.500" />
           </InputLeftElement>
-          <Input type="tel" placeholder="Filter by wallet address" />
+          <Input
+            type="text"
+            placeholder="Filter by wallet address"
+            value={filter}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              setFilter(event.target.value)
+            }
+          />
         </InputGroup>
 
         <Box ml={[0, 0, 'auto']} minWidth={['none', 'none', '200px']}>
