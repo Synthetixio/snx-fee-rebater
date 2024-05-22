@@ -17,7 +17,7 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import { addWeeks, startOfWeek, endOfWeek, format, isBefore } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ChangeEvent } from 'react';
 
 import { DataTable } from '~/lib/components/DataTable';
 import type { ProcessedData } from '~/lib/utils/processData';
@@ -59,10 +59,10 @@ const filteredWeeks = weeks.filter((week) => {
 }).reverse();
 
 const Home = () => {
-  const [tableData, setTableData] = useState<ProcessedData | Array<any>>([]);
+  const [tableData, setTableData] = useState<any>([]);
   const [filter, setFilter] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
-  const [weeklySnxTotal, setWeeklySnxTotal] = useState<boolean>(true);
+  const [weeklySnxTotal, setWeeklySnxTotal] = useState<number>(0);
   const [selectedWeek, setSelectedWeek] = useState<number>(0);
 
   useEffect(() => {
@@ -83,7 +83,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    tableData.filter((row) => {
+    tableData.filter((row: any) => {
       return row.walletAddress.includes(filter);
     });
   }, [filter, tableData]);
@@ -132,7 +132,7 @@ const Home = () => {
         >
           <Flex alignItems="center" justifyContent="center">
             <CircularProgress
-              value={40}
+              value={0}
               trackColor="#001C22"
               color="#00D1FF"
               size="100%"
@@ -147,7 +147,7 @@ const Home = () => {
                   opacity={loading ? 0 : 1}
                   transition="opacity 0.33s"
                 >
-                  ? SNX
+                  0 SNX
                 </Text>
                 <Text
                   fontSize="xs"
@@ -219,8 +219,8 @@ const Home = () => {
 
         <Box ml={[0, 0, 'auto']} minWidth={['none', 'none', '200px']}>
           <Select size="sm" bg="black" value={selectedWeek}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setSelectedWeek(event.target.value)
+            onChange={(event: ChangeEvent<HTMLSelectElement>) =>
+              setSelectedWeek(Number(event.target.value))
             }>
             {filteredWeeks.map((week, ind) => {
               return (
