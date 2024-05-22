@@ -33,7 +33,7 @@ const generateWeeks = (startDate: Date, numberOfWeeks: number) => {
   const weeksArray = [];
   for (let i = 0; i < numberOfWeeks; i++) {
     const startOfWeekDate = addWeeks(startDate, i); // startOfWeek sets week start to Wednesday
-    const endOfWeekDate = addWeeks(startDate, i); // endOfWeek sets week end to Tuesday
+    const endOfWeekDate = addWeeks(startDate, i + 1); // endOfWeek sets week end to Tuesday
     weeksArray.push({
       start: formatDate(startOfWeekDate),
       end: formatDate(endOfWeekDate),
@@ -43,7 +43,7 @@ const generateWeeks = (startDate: Date, numberOfWeeks: number) => {
 };
 
 // Initial start date
-const initialStartDate = new Date(Date.UTC(2024, 4, 22, 20, 0, 0));
+const initialStartDate = new Date(Date.UTC(2024, 4, 4, 20, 0, 0));
 
 // Generate 100 weeks
 const weeks = generateWeeks(initialStartDate, 100);
@@ -65,13 +65,16 @@ const Home = () => {
   const [selectedWeek, setSelectedWeek] = useState<number>(0);
 
   useEffect(() => {
-    console.log('RUNNING', selectedWeek);
+    console.log('RUNNING', selectedWeek, filteredWeeks);
     const fetchData = async () => {
+      if (!filteredWeeks[selectedWeek]) {
+        console.log('ABORTING');
+        setLoading(false);
+        return;
+      }
       try {
         setLoading(true);
         const url = new URL('/api/data', window.location.origin);
-        console.log(filteredWeeks[selectedWeek].start);
-        console.log(filteredWeeks[selectedWeek].end);
         const startDate = new Date(
           filteredWeeks[selectedWeek].start
         ).toISOString();
@@ -79,7 +82,6 @@ const Home = () => {
         url.searchParams.append('startDate', startDate);
         url.searchParams.append('endDate', endDate);
 
-        console.log('URL', url.toString());
         const response = await fetch(url.toString());
         const data = await response.json();
         const { processedData, totalSnxDistribution } = await processData(data);
@@ -92,7 +94,7 @@ const Home = () => {
     };
 
     fetchData();
-  }, [selectedWeek, filter]);
+  }, [selectedWeek]);
 
   useEffect(() => {
     tableData.filter((row: any) => {
