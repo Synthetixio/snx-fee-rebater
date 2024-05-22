@@ -1,7 +1,7 @@
 'use client';
 
-import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
-import { Table, Thead, Tbody, Tr, Th, Td, chakra } from '@chakra-ui/react';
+import { ChevronUpIcon, ChevronDownIcon, UpDownIcon } from '@chakra-ui/icons';
+import { Table, Thead, Tbody, Tr, Th, Td, chakra, Flex } from '@chakra-ui/react';
 import { useReactTable, flexRender, getCoreRowModel, getSortedRowModel, createColumnHelper } from '@tanstack/react-table';
 import * as React from 'react';
 
@@ -39,7 +39,7 @@ export function DataTable<Data extends object>({ data }: any) {
     }),
   ];
 
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = React.useState<SortingState>([{id: "distribution", desc: true}]);
   const table = useReactTable({
     columns,
     data,
@@ -51,11 +51,8 @@ export function DataTable<Data extends object>({ data }: any) {
     },
   });
 
-  console.log('rerendering')
-
   return (
     <Table size="sm">
-
       <Thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <Tr key={headerGroup.id}>
@@ -64,22 +61,26 @@ export function DataTable<Data extends object>({ data }: any) {
               return (
                 <Th
                   key={header.id}
+                  cursor="pointer"
                   onClick={header.column.getToggleSortingHandler()}
                   isNumeric={meta?.isNumeric}
-                  py={3}
+                  pt={3}
+                  pb={2.5}
                 >
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext()
                   )}
-                  <chakra.span pl="4">
+                  <chakra.span pl="1">
                     {header.column.getIsSorted() ? (
                       header.column.getIsSorted() === 'desc' ? (
-                        <TriangleDownIcon aria-label="sorted descending" />
+                        <ChevronDownIcon transform="scale(1.5) translateY(1.5px)" aria-label="sorted descending" />
                       ) : (
-                        <TriangleUpIcon aria-label="sorted ascending" />
+                        <ChevronUpIcon transform="scale(1.5) translateY(-2px)" aria-label="sorted ascending" />
                       )
-                    ) : null}
+                    ) : (
+                        <UpDownIcon transform="translateY(-1px)" aria-label="unsorted" />
+                    )}
                   </chakra.span>
                 </Th>
               );
@@ -89,13 +90,15 @@ export function DataTable<Data extends object>({ data }: any) {
       </Thead>
 
       <Tbody>
-        {table.getRowModel().rows.map((row) => (
+        {table.getRowModel().rows.map((row, ind) => (
           <Tr key={row.id}>
             {row.getVisibleCells().map((cell) => {
               const { meta } = cell.column.columnDef;
               return (
-                <Td key={cell.id} isNumeric={meta?.isNumeric}>
+                <Td key={cell.id} isNumeric={meta?.isNumeric} borderBottom={ind == table.getRowModel().rows.length - 1 ? 'none' : undefined}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  {cell.column.id == 'paid' && ' USDC'}
+                  {cell.column.id == 'distribution' && ' SNX'}
                 </Td>
               );
             })}
