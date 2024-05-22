@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
+
 'use client';
 
 import { SearchIcon } from '@chakra-ui/icons';
@@ -21,7 +24,7 @@ import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 
 import { DataTable } from '~/lib/components/DataTable';
-import type { ProcessedData } from '~/lib/utils/processData';
+// import type { ProcessedData } from '~/lib/utils/processData';
 import { processData } from '~/lib/utils/processData';
 
 // Helper function to format dates
@@ -31,6 +34,7 @@ const formatDate = (date: Date): string =>
 // Function to generate weeks array
 const generateWeeks = (startDate: Date, numberOfWeeks: number) => {
   const weeksArray = [];
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < numberOfWeeks; i++) {
     const startOfWeekDate = addWeeks(startDate, i); // startOfWeek sets week start to Wednesday
     const endOfWeekDate = addWeeks(startDate, i + 1); // endOfWeek sets week end to Tuesday
@@ -84,7 +88,9 @@ const Home = () => {
 
         const response = await fetch(url.toString());
         const data = await response.json();
-        const { processedData, totalSnxDistribution } = await processData(data) as any;
+        const { processedData, totalSnxDistribution } = (await processData(
+          data
+        )) as any;
         setTableData(processedData);
         setWeeklySnxTotal(Math.floor(totalSnxDistribution));
         setLoading(false);
@@ -201,7 +207,8 @@ const Home = () => {
             direction={['column', 'column', 'row']}
           >
             <Heading size="md" fontWeight="semibold" mb={[2, 2, 0]}>
-              Distribution Estimate for Week {filteredWeeks.length - selectedWeek} (
+              Distribution Estimate for Week{' '}
+              {filteredWeeks.length - selectedWeek} (
               {format(filteredWeeks[selectedWeek].start, 'M/dd')} -{' '}
               {format(filteredWeeks[selectedWeek].end, 'M/dd')})
             </Heading>
@@ -255,8 +262,8 @@ const Home = () => {
             {filteredWeeks.map((week, ind) => {
               return (
                 <option value={ind}>
-                  Week {filteredWeeks.length - ind} ({format(week.start, 'M/dd')} -{' '}
-                  {format(week.end, 'M/dd')})
+                  Week {filteredWeeks.length - ind} (
+                  {format(week.start, 'M/dd')} - {format(week.end, 'M/dd')})
                 </option>
               );
             })}

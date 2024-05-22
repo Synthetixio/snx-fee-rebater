@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 import { NextResponse } from 'next/server';
 
 import pool from '../../db';
 
-export const GET = async (req: any, res: any) => {
+export const GET = async (req: any) => {
   try {
     const { searchParams } = new URL(req.url);
     const startDate = searchParams.get('startDate');

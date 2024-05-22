@@ -1,4 +1,4 @@
-import { Box, Text, Image, Flex, Link } from '@chakra-ui/react';
+import { Text, Image, Flex, Link } from '@chakra-ui/react';
 
 const Header = () => {
   return (
@@ -8,16 +8,16 @@ const Header = () => {
       align="center"
       direction={['column', 'column', 'row']}
     >
-      <Flex direction={['column','row']} gap={3.5}>
+      <Flex direction={['column', 'row']} gap={3.5}>
         <Image src="/synthetix.svg" alt="Synthetix" height="20px" />
-        <Flex mx={['auto','none']}>
-        <Text ml={0} mr={3} opacity="0.75" fontSize="sm">
-          on
-        </Text>
-        <Image src="/base.svg" alt="Base" height="20px" opacity={0.9} />
+        <Flex mx={['auto', 'none']}>
+          <Text ml={0} mr={3} opacity="0.75" fontSize="sm">
+            on
+          </Text>
+          <Image src="/base.svg" alt="Base" height="20px" opacity={0.9} />
         </Flex>
       </Flex>
-      <Flex ml={['none', 'none', 'auto']} gap={10} mt={[6,6,0]}>
+      <Flex ml={['none', 'none', 'auto']} gap={10} mt={[6, 6, 0]}>
         <Link
           borderBottom="1px solid"
           borderColor="gray.700"

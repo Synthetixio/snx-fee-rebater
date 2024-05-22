@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+
 'use client';
 
 import {
@@ -33,7 +35,8 @@ export type DataTableProps<Data extends object> = {
   data: Data[];
 };
 
-export function DataTable<Data extends object>({ data }: any) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function DataTable({ data }: any) {
   type TableRowData = {
     walletAddress: string;
     feesPaid: number;

@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 import { ethers } from 'ethers';
-import { fetchPriceData } from './fetchPrice';
+// import { fetchPriceData } from './fetchPrice';
 
 // Define the ProcessedData type
 export interface ProcessedData {
@@ -77,7 +78,7 @@ export const processData = async (
       walletData[walletAddress] = { feesPaid: 0, estimatedDistribution: 0 };
     }
 
-    if (!isNaN(exchangeFees)) {
+    if (!Number.isNaN(exchangeFees)) {
       walletData[walletAddress].feesPaid += exchangeFees;
       const estimatedFeeDistribution = exchangeFees * FEE_PERCENTAGE;
       const snxDistribution = estimatedFeeDistribution / 2.5;
