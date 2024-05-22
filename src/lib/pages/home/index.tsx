@@ -63,6 +63,7 @@ const filteredWeeks = weeks
 
 const Home = () => {
   const [tableData, setTableData] = useState<any>([]);
+  const [filteredTableData, setFilteredTableData] = useState<any>([]);
   const [filter, setFilter] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [weeklySnxTotal, setWeeklySnxTotal] = useState<number>(0);
@@ -115,9 +116,11 @@ const Home = () => {
   }, [selectedWeek, snxPrice]);
 
   useEffect(() => {
-    tableData.filter((row: any) => {
-      return row.walletAddress.includes(filter);
-    });
+    setFilteredTableData(
+      tableData.filter((row: any) => {
+        return row.walletAddress.includes(filter);
+      })
+    );
   }, [filter, tableData]);
 
   return (
@@ -296,7 +299,7 @@ const Home = () => {
             <Spinner m="auto" size="xl" color="#00D1FF" />
           </Flex>
         ) : (
-          <DataTable data={tableData} price={snxPrice} />
+          <DataTable data={filteredTableData} price={snxPrice} />
         )}
       </Box>
     </Flex>
