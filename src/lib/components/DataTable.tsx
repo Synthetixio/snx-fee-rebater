@@ -1,6 +1,6 @@
 'use client';
 
-import { InfoOutlineIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
+import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { Table, Thead, Tbody, Tr, Th, Td, chakra, Tooltip } from '@chakra-ui/react';
 import type { ColumnDef, SortingState } from '@tanstack/react-table';
 import {

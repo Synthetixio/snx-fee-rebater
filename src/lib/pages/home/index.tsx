@@ -96,8 +96,8 @@ const Home = () => {
   }, []);
   return (
     <Flex direction="column" minHeight="70vh" gap={6} mb={6} w="full">
-      <Flex gap={6}>
-        <Box
+      <Flex gap={6} direction={['column', 'column', 'row']}>
+        <Flex
           color="gray.300"
           bg="black"
           border="1px solid"
@@ -105,25 +105,27 @@ const Home = () => {
           p={6}
           borderRadius="md"
         >
-          <Heading size="md" fontWeight="semibold" mb={3}>
-            Synthetix is rebating a share of fees on Base
-          </Heading>
-          <Text mb={2}>
-            Synthetix is rebating trading fees from the perpetual futures
-            markets deployed to Base with 500,000 SNX allocated by the Treasury
-            Council. Read about the criteria in&nbsp;
-            <Link
-              _hover={{ textDecor: 'none', borderColor: 'gray.500' }}
-              borderBottom="1px solid"
-              borderColor="gray.600"
-              href="https://blog.synthetix.io/snx-perps-trading-incentives-on-base/"
-            >
-              this blog post
-            </Link>
-            .
-          </Text>
-          <Text>Use this tool to see an estimate of the distributions.</Text>
-        </Box>
+          <Box my="auto">
+            <Heading size="md" fontWeight="semibold" mb={3}>
+              Synthetix is rebating a share of fees on Base
+            </Heading>
+            <Text mb={2}>
+              Synthetix is rebating trading fees from the perpetual futures
+              markets deployed to Base with 500,000 SNX allocated by the
+              Treasury Council. Read about the criteria in&nbsp;
+              <Link
+                _hover={{ textDecor: 'none', borderColor: 'gray.500' }}
+                borderBottom="1px solid"
+                borderColor="gray.600"
+                href="https://blog.synthetix.io/snx-perps-trading-incentives-on-base/"
+              >
+                this blog post
+              </Link>
+              .
+            </Text>
+            <Text>Use this tool to see an estimate of the distributions.</Text>
+          </Box>
+        </Flex>
 
         <Box
           color="gray.300"
@@ -161,7 +163,11 @@ const Home = () => {
         p={6}
         borderRadius="md"
       >
-        <Flex mb={3.5} alignItems="center">
+        <Flex
+          mb={3.5}
+          alignItems="center"
+          direction={['column', 'column', 'row']}
+        >
           <Heading size="md" fontWeight="semibold">
             Total Distribution for Week X (X/X - X/X)
           </Heading>
@@ -170,7 +176,7 @@ const Home = () => {
             fontWeight="medium"
             textTransform="uppercase"
             color="gray.300"
-            ml="auto"
+            ml={[0, 0, 'auto']}
           >
             23,245/50,000 SNX
           </Text>
@@ -184,7 +190,7 @@ const Home = () => {
         />
       </Box>
 
-      <Flex w="100%" gap={6}>
+      <Flex w="100%" gap={6} direction={['column', 'column', 'row']}>
         <InputGroup bg="black">
           <InputLeftElement pointerEvents="none">
             <SearchIcon color="gray.500" />
@@ -192,7 +198,7 @@ const Home = () => {
           <Input type="tel" placeholder="Filter by wallet address" />
         </InputGroup>
 
-        <Box ml="auto" minWidth="200px">
+        <Box ml={[0, 0, 'auto']} minWidth={['none', 'none', '200px']}>
           <Select bg="black">
             <option selected value="option1">
               Week X (X/X - X/X)
