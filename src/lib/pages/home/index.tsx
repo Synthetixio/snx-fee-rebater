@@ -15,8 +15,8 @@ import {
   CircularProgressLabel,
   Progress,
 } from '@chakra-ui/react';
-import { addWeeks, startOfWeek, endOfWeek, format, isBefore } from 'date-fns';
-import { useEffect } from 'react';
+import { addWeeks, startOfWeek, endOfWeek, format, isBefore, set } from 'date-fns';
+import { useEffect, useState } from 'react';
 
 import { DataTable } from '~/lib/components/DataTable';
 import { useFetchPrice } from '~/lib/utils/fetchPrice';
@@ -57,13 +57,18 @@ const filteredWeeks = weeks.filter((week) => {
 });
 
 const Home = () => {
+  const [tableData, setTableData] = useState();
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await fetch('/api/data');
       const data = await response.json();
+      setTableData(data);
       console.log('DATA', data);
     };
 
+    fetchUsers();
+
+    /*
     const fetchFees = async () => {
       try {
         const users = await fetchUsers(); // Use the fetchUsers function to get the data
@@ -80,6 +85,7 @@ const Home = () => {
         throw error; // Re-throw the error to handle it further up the call stack if necessary
       }
     };
+    */
 
   }, []);
   return (
@@ -175,7 +181,17 @@ const Home = () => {
         </Flex>
         <Progress color='#00D1FF' background="#001C22" size='lg' value={20} borderRadius="sm" />
       </Box>
-      <DataTable data={[]} columns={[]} />
+
+      <Box
+        color="gray.300"
+        bg="black"
+        border="1px solid"
+        borderColor="whiteAlpha.300"
+        borderRadius="md"
+        overflow="auto"
+      >
+      <DataTable data={tableData} />
+      </Box>
     </Flex>
   );
 };

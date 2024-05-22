@@ -8,18 +8,62 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
+  createColumnHelper,
 } from '@tanstack/react-table';
 import * as React from 'react';
 
 export type DataTableProps<Data extends object> = {
   data: Data[];
-  columns: ColumnDef<Data, any>[];
 };
 
-export function DataTable<Data extends object>({
-  data,
-  columns,
-}: DataTableProps<Data>) {
+export function DataTable<Data extends object>({}: any) {
+  type UnitConversion = {
+    fromUnit: string;
+    toUnit: string;
+    factor: number;
+  };
+
+  const data: UnitConversion[] = [
+    {
+      fromUnit: 'inches',
+      toUnit: 'millimetres (mm)',
+      factor: 25.4,
+    },
+    {
+      fromUnit: 'feet',
+      toUnit: 'centimetres (cm)',
+      factor: 30.48,
+    },
+    {
+      fromUnit: 'yards',
+      toUnit: 'metres (m)',
+      factor: 0.91444,
+    },
+  ];
+
+  const columnHelper = createColumnHelper<UnitConversion>();
+
+  const columns = [
+    columnHelper.accessor('fromUnit', {
+      cell: (info) => info.getValue(),
+      header: 'Wallet Address',
+    }),
+    columnHelper.accessor('toUnit', {
+      cell: (info) => info.getValue(),
+      header: 'Fees Paid',
+      meta: {
+        isNumeric: true,
+      },
+    }),
+    columnHelper.accessor('factor', {
+      cell: (info) => info.getValue(),
+      header: 'Estimated Distribution',
+      meta: {
+        isNumeric: true,
+      },
+    }),
+  ];
+
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const table = useReactTable({
     columns,
@@ -33,7 +77,7 @@ export function DataTable<Data extends object>({
   });
 
   return (
-    <Table>
+    <Table size="sm">
       <Thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <Tr key={headerGroup.id}>
@@ -45,6 +89,7 @@ export function DataTable<Data extends object>({
                   key={header.id}
                   onClick={header.column.getToggleSortingHandler()}
                   isNumeric={meta?.isNumeric}
+                  py={3}
                 >
                   {flexRender(
                     header.column.columnDef.header,

@@ -29,7 +29,7 @@ const Layout = ({ children }: LayoutProps) => {
       />
       <Box margin="0 auto" maxWidth={800} transition="0.5s ease-out">
         <Box my={24}>
-          <Box mb={16}>
+          <Box mb={12}>
             <Header />
           </Box>
           <Box as="main">{children}</Box>
