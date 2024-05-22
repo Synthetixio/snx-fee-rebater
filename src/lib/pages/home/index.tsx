@@ -140,22 +140,28 @@ const Home = () => {
           borderRadius="md"
           minWidth="200px"
         >
-          <CircularProgress
-            value={40}
-            trackColor="#001C22"
-            color="#00D1FF"
-            size="100%"
-            thickness="6px"
-          >
-            <CircularProgressLabel>
-              <Text fontSize="md" fontWeight="medium" textTransform="uppercase">
-                123,302 SNX
-              </Text>
-              <Text fontSize="xs" fontWeight="bold" color="gray.300">
-                Total Distributed
-              </Text>
-            </CircularProgressLabel>
-          </CircularProgress>
+          <Flex alignItems="center" justifyContent="center">
+            <CircularProgress
+              value={40}
+              trackColor="#001C22"
+              color="#00D1FF"
+              size="100%"
+              thickness="6px"
+            >
+              <CircularProgressLabel>
+                <Text
+                  fontSize="md"
+                  fontWeight="medium"
+                  textTransform="uppercase"
+                >
+                  123,302 SNX
+                </Text>
+                <Text fontSize="xs" fontWeight="bold" color="gray.300">
+                  Total Distributed
+                </Text>
+              </CircularProgressLabel>
+            </CircularProgress>
+          </Flex>
         </Box>
       </Flex>
 
@@ -169,10 +175,10 @@ const Home = () => {
       >
         <Flex
           mb={3.5}
-          alignItems="center"
+          alignItems={['left', 'left', 'center']}
           direction={['column', 'column', 'row']}
         >
-          <Heading size="md" fontWeight="semibold">
+          <Heading size="md" fontWeight="semibold" mb={[2, 2, 0]}>
             Distribution Estimate for Week X (X/X - X/X)
           </Heading>
           <Text
