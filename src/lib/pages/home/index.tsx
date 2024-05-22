@@ -62,14 +62,16 @@ const Home = () => {
   const [tableData, setTableData] = useState<ProcessedData[]>([]);
   const [filter, setFilter] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
+  const [weeklySnxTotal, setWeeklySnxTotal] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch('/api/data');
         const data = await response.json();
-        const processedData = await processData(data);
+        const { processedData, totalSnxDistribution } = await processData(data);
         setTableData(processedData);
+        setWeeklySnxTotal(totalSnxDistribution);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -186,14 +188,14 @@ const Home = () => {
             opacity={loading ? 0 : 1}
             transition="opacity 0.33s"
           >
-            23,245/50,000 SNX
+            {weeklySnxTotal}/50,000 SNX
           </Text>
         </Flex>
         <Progress
           color="#00D1FF"
           background="#001C22"
           size="lg"
-          value={20}
+          value={weeklySnxTotal}
           borderRadius="sm"
           isIndeterminate={loading}
         />

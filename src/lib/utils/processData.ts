@@ -2,9 +2,12 @@ import { ethers } from 'ethers';
 
 // Define the ProcessedData type
 export interface ProcessedData {
-  walletAddress: string;
-  feesPaid: number;
-  estimatedDistribution: number;
+  processedData: {
+    walletAddress: string;
+    feesPaid: number;
+    estimatedDistribution: number;
+  };
+  totalSnxDistribution: number;
 }
 
 const perpsMarketProxyABI = [
@@ -64,6 +67,7 @@ export const processData = async (
     };
   } = {};
 
+  let totalSnxDistribution = 0;
   fetchedData.forEach((data, index) => {
     const walletAddress = walletAddresses[index];
     const exchangeFees = Number(data.exchange_fees);
@@ -76,6 +80,7 @@ export const processData = async (
       walletData[walletAddress].feesPaid += exchangeFees;
       const estimatedFeeDistribution = exchangeFees * FEE_PERCENTAGE;
       const snxDistribution = estimatedFeeDistribution / 2.5;
+      totalSnxDistribution += snxDistribution;
       walletData[walletAddress].estimatedDistribution += snxDistribution;
     } else {
       console.error(
@@ -85,9 +90,12 @@ export const processData = async (
     }
   });
 
-  return Object.keys(walletData).map((walletAddress) => ({
-    walletAddress,
-    feesPaid: walletData[walletAddress].feesPaid,
-    estimatedDistribution: walletData[walletAddress].estimatedDistribution,
-  }));
+  return {
+    processedData: Object.keys(walletData).map((walletAddress) => ({
+      walletAddress,
+      feesPaid: walletData[walletAddress].feesPaid,
+      estimatedDistribution: walletData[walletAddress].estimatedDistribution,
+    })),
+    totalSnxDistribution,
+  };
 };
