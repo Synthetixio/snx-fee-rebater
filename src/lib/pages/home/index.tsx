@@ -109,6 +109,7 @@ const Home = () => {
           p={6}
           borderRadius="md"
         >
+<<<<<<< Updated upstream
           <Box my="auto">
             <Heading size="md" fontWeight="semibold" mb={3}>
               Synthetix is rebating a share of fees on Base
@@ -117,6 +118,20 @@ const Home = () => {
               Synthetix is rebating trading fees from the perpetual futures
               markets deployed to Base with 500,000 SNX allocated by the
               Treasury Council. Read about the criteria in&nbsp;
+=======
+          <Heading size="md" fontWeight="semibold" mb={4}>
+            Synthetix is rebating trading fees on Base
+          </Heading>
+          <UnorderedList>
+            <ListItem mb={2}>
+              Synthetix is rebating 90% of accounts' trading fees spent using
+              Synthetix’s perpetual futures markets on Base with 500,000 SNX
+              allocated by the Treasury Council.
+            </ListItem>
+            <ListItem mb={2}>
+              50,000 SNX will be rebated each week on a first-come, first-served
+              basis, starting May 22nd. Read more in&nbsp;
+>>>>>>> Stashed changes
               <Link
                 _hover={{ textDecor: 'none', borderColor: 'gray.500' }}
                 borderBottom="1px solid"
@@ -126,10 +141,19 @@ const Home = () => {
                 this blog post
               </Link>
               .
+<<<<<<< Updated upstream
             </Text>
             <Text>Use this tool to see an estimate of the distributions.</Text>
           </Box>
         </Flex>
+=======
+            </ListItem>
+            <ListItem>
+              Use this tool to see an estimate of the SNX distribution.
+            </ListItem>
+          </UnorderedList>
+        </Box>
+>>>>>>> Stashed changes
 
         <Box
           color="gray.300"
@@ -140,6 +164,12 @@ const Home = () => {
           borderRadius="md"
           minWidth="200px"
         >
+<<<<<<< Updated upstream
+=======
+          <Heading size="md" fontWeight="semibold" mb={4}>
+            Total Distributed
+          </Heading>
+>>>>>>> Stashed changes
           <CircularProgress
             value={40}
             trackColor="#001C22"
@@ -147,6 +177,7 @@ const Home = () => {
             size="100%"
             thickness="6px"
           >
+<<<<<<< Updated upstream
             <CircularProgressLabel>
               <Text fontSize="md" fontWeight="medium" textTransform="uppercase">
                 123,302 SNX
@@ -154,6 +185,15 @@ const Home = () => {
               <Text fontSize="xs" fontWeight="bold" color="gray.300">
                 Total Distributed
               </Text>
+=======
+            <CircularProgressLabel
+              fontSize="md"
+              fontWeight="medium"
+              letterSpacing="0.1rem"
+              textTransform="uppercase"
+            >
+              123,302 SNX
+>>>>>>> Stashed changes
             </CircularProgressLabel>
           </CircularProgress>
         </Box>
