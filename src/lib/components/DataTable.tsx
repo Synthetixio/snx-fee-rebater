@@ -36,7 +36,7 @@ export type DataTableProps<Data extends object> = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function DataTable({ data }: any) {
+export function DataTable({ data, price }: any) {
   type TableRowData = {
     walletAddress: string;
     feesPaid: number;
@@ -94,7 +94,9 @@ export function DataTable({ data }: any) {
                     header.getContext()
                   )}
                   {header.column.id === 'estimatedDistribution' && (
-                    <Tooltip label={`This is based on an SNX price of $${0}`}>
+                    <Tooltip
+                      label={`This is based on an SNX price of $${price}`}
+                    >
                       <InfoOutlineIcon transform="translateY(-0.5px)" ml={1} />
                     </Tooltip>
                   )}

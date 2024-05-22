@@ -75,7 +75,7 @@ const Home = () => {
         'https://api.coingecko.com/api/v3/simple/price?ids=havven&vs_currencies=usd'
       );
       const data = await response.json();
-      setSnxPrice(data.synthetix.usd);
+      setSnxPrice(data.havven.usd);
     };
 
     fetchPrice();
@@ -83,7 +83,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!filteredWeeks[selectedWeek]) {
+      if (!filteredWeeks[selectedWeek] || !snxPrice) {
         setLoading(false);
         return;
       }
