@@ -84,7 +84,7 @@ const Home = () => {
 
         const response = await fetch(url.toString());
         const data = await response.json();
-        const { processedData, totalSnxDistribution } = await processData(data);
+        const { processedData, totalSnxDistribution } = await processData(data) as any;
         setTableData(processedData);
         setWeeklySnxTotal(Math.floor(totalSnxDistribution));
         setLoading(false);

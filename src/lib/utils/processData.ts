@@ -41,7 +41,7 @@ const FEE_PERCENTAGE = 0.9;
 
 export const processData = async (
   fetchedData: FetchedData[]
-): Promise<ProcessedData> => {
+): Promise<object> => {
   const accountOwnerCache: { [accountId: string]: string } = {};
 
   const getWalletAddress = async (accountId: number): Promise<string> => {
