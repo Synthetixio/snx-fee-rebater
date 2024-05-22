@@ -5,6 +5,7 @@ import {
   ChevronDownIcon,
   UpDownIcon,
   ExternalLinkIcon,
+  InfoOutlineIcon,
 } from '@chakra-ui/icons';
 import {
   Table,
@@ -16,6 +17,7 @@ import {
   chakra,
   Link,
   Code,
+  Tooltip,
 } from '@chakra-ui/react';
 import type { SortingState } from '@tanstack/react-table';
 import {
@@ -87,6 +89,11 @@ export function DataTable<Data extends object>({ data }: any) {
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext()
+                  )}
+                  {header.column.id === 'estimatedDistribution' && (
+                    <Tooltip label={`This is based on an SNX price of $${0}`}>
+                      <InfoOutlineIcon ml={1} />
+                    </Tooltip>
                   )}
                   <chakra.span pl="1">
                     {header.column.getIsSorted() ? (
