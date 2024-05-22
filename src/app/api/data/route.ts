@@ -15,8 +15,8 @@ export const GET = async (req: any, res: any) => {
       FROM
         base_mainnet.fct_perp_trades
       WHERE
-        ts >= '2024-05-01' AND
-        ts <= '2024-05-08'
+        ts >= '2024-05-15' AND
+        ts <= '2024-05-22'
       GROUP BY 1, 2
       ORDER BY 1 DESC, 3 DESC
       LIMIT 1000
