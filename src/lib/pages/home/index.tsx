@@ -65,13 +65,26 @@ const Home = () => {
   const [selectedWeek, setSelectedWeek] = useState<number>(0);
 
   useEffect(() => {
+    console.log('RUNNING', selectedWeek);
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/data');
+        setLoading(true);
+        const url = new URL('/api/data', window.location.origin);
+        console.log(filteredWeeks[selectedWeek].start);
+        console.log(filteredWeeks[selectedWeek].end);
+        const startDate = new Date(
+          filteredWeeks[selectedWeek].start
+        ).toISOString();
+        const endDate = new Date(filteredWeeks[selectedWeek].end).toISOString();
+        url.searchParams.append('startDate', startDate);
+        url.searchParams.append('endDate', endDate);
+
+        console.log('URL', url.toString());
+        const response = await fetch(url.toString());
         const data = await response.json();
         const { processedData, totalSnxDistribution } = await processData(data);
         setTableData(processedData);
-        setWeeklySnxTotal(totalSnxDistribution);
+        setWeeklySnxTotal(Math.floor(totalSnxDistribution));
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -79,7 +92,7 @@ const Home = () => {
     };
 
     fetchData();
-  }, []);
+  }, [selectedWeek, filter]);
 
   useEffect(() => {
     tableData.filter((row: any) => {

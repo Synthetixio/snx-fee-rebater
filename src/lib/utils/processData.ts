@@ -1,4 +1,5 @@
 import { ethers } from 'ethers';
+import { fetchPriceData } from './fetchPrice';
 
 // Define the ProcessedData type
 export interface ProcessedData {

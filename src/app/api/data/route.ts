@@ -6,6 +6,11 @@ import pool from '../../db';
 
 export const GET = async (req: any, res: any) => {
   try {
+    const { searchParams } = new URL(req.url);
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
+    console.log('STARTDATE', startDate);
+    console.log('ENDDATE', endDate);
     const client = await pool.connect();
     const query = `
       SELECT
@@ -15,8 +20,8 @@ export const GET = async (req: any, res: any) => {
       FROM
         base_mainnet.fct_perp_trades
       WHERE
-        ts >= '2024-05-15' AND
-        ts <= '2024-05-22'
+        ts >= '${startDate}' AND
+        ts <= '${endDate}'
       GROUP BY 1, 2
       ORDER BY 1 DESC, 3 DESC
       LIMIT 1000
