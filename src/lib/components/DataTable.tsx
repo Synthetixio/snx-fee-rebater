@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronUpIcon, ChevronDownIcon, UpDownIcon } from '@chakra-ui/icons';
+import { ChevronUpIcon, ChevronDownIcon, UpDownIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import {
   Table,
   Thead,
@@ -9,7 +9,8 @@ import {
   Th,
   Td,
   chakra,
-  Flex,
+  Link,
+  Code,
 } from '@chakra-ui/react';
 import {
   useReactTable,
@@ -130,7 +131,7 @@ export function DataTable<Data extends object>({ data }: any) {
                       : undefined
                   }
                 >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  {cell.column.id == 'walletAddress' ? <Code _hover={{textDecoration: 'none'}} bg="none" as={Link} href={cell.getValue()}>{cell.getValue().substring(0,6)}...{cell.getValue().slice(-4)}<ExternalLinkIcon ml={1.5} opacity={0.8} transform="translateY(-1.5px)" /></Code> : flexRender(cell.column.columnDef.cell, cell.getContext())}
                   {cell.column.id == 'feesPaid' && ' USDC'}
                   {cell.column.id == 'estimatedDistribution' && ' SNX'}
                 </Td>

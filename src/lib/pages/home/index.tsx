@@ -146,7 +146,7 @@ const Home = () => {
                   opacity={loading ? 0 : 1}
                   transition="opacity 0.33s"
                 >
-                  123,302 SNX
+                  ? SNX
                 </Text>
                 <Text
                   fontSize="xs"
