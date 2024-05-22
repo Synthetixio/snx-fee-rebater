@@ -14,6 +14,7 @@ import {
   CircularProgress,
   CircularProgressLabel,
   Progress,
+  Spinner,
 } from '@chakra-ui/react';
 import { addWeeks, startOfWeek, endOfWeek, format, isBefore } from 'date-fns';
 import { useEffect, useState } from 'react';
@@ -60,6 +61,7 @@ const filteredWeeks = weeks.filter((week) => {
 const Home = () => {
   const [tableData, setTableData] = useState<ProcessedData[]>([]);
   const [filter, setFilter] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -147,16 +149,25 @@ const Home = () => {
               color="#00D1FF"
               size="100%"
               thickness="6px"
+              isIndeterminate={loading}
             >
               <CircularProgressLabel>
                 <Text
                   fontSize="md"
                   fontWeight="medium"
                   textTransform="uppercase"
+                  opacity={loading ? 0 : 1}
+                  transition="opacity 0.33s"
                 >
                   123,302 SNX
                 </Text>
-                <Text fontSize="xs" fontWeight="bold" color="gray.300">
+                <Text
+                  fontSize="xs"
+                  fontWeight="bold"
+                  color="gray.300"
+                  opacity={loading ? 0 : 1}
+                  transition="opacity 0.33s"
+                >
                   Total Distributed
                 </Text>
               </CircularProgressLabel>
@@ -187,6 +198,8 @@ const Home = () => {
             textTransform="uppercase"
             color="gray.300"
             ml={[0, 0, 'auto']}
+            opacity={loading ? 0 : 1}
+            transition="opacity 0.33s"
           >
             23,245/50,000 SNX
           </Text>
@@ -197,6 +210,7 @@ const Home = () => {
           size="lg"
           value={20}
           borderRadius="sm"
+          isIndeterminate={loading}
         />
       </Box>
 
@@ -234,7 +248,13 @@ const Home = () => {
         borderRadius="md"
         overflow="auto"
       >
-        <DataTable data={data} />
+        {loading ? (
+          <Flex py={12}>
+            <Spinner m="auto" size="xl" />
+          </Flex>
+        ) : (
+          <DataTable data={data} />
+        )}
       </Box>
     </Flex>
   );
