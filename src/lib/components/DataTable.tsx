@@ -1,6 +1,11 @@
 'use client';
 
-import { ChevronUpIcon, ChevronDownIcon, UpDownIcon, ExternalLinkIcon } from '@chakra-ui/icons';
+import {
+  ChevronUpIcon,
+  ChevronDownIcon,
+  UpDownIcon,
+  ExternalLinkIcon,
+} from '@chakra-ui/icons';
 import {
   Table,
   Thead,
@@ -12,6 +17,7 @@ import {
   Link,
   Code,
 } from '@chakra-ui/react';
+import type { SortingState } from '@tanstack/react-table';
 import {
   useReactTable,
   flexRender,
@@ -42,16 +48,10 @@ export function DataTable<Data extends object>({ data }: any) {
     columnHelper.accessor('feesPaid', {
       cell: (info) => Number(info.getValue()).toFixed(2),
       header: 'Fees Paid',
-      meta: {
-        isNumeric: true,
-      },
     }),
     columnHelper.accessor('estimatedDistribution', {
       cell: (info) => Number(info.getValue()).toFixed(2),
       header: 'Estimated Distribution',
-      meta: {
-        isNumeric: true,
-      },
     }),
   ];
 
@@ -75,13 +75,11 @@ export function DataTable<Data extends object>({ data }: any) {
         {table.getHeaderGroups().map((headerGroup) => (
           <Tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
-              const { meta } = header.column.columnDef;
               return (
                 <Th
                   key={header.id}
                   cursor="pointer"
                   onClick={header.column.getToggleSortingHandler()}
-                  isNumeric={meta?.isNumeric}
                   pt={3}
                   pb={2.5}
                 >
@@ -120,20 +118,35 @@ export function DataTable<Data extends object>({ data }: any) {
         {table.getRowModel().rows.map((row, ind) => (
           <Tr key={row.id}>
             {row.getVisibleCells().map((cell) => {
-              const { meta } = cell.column.columnDef;
               return (
                 <Td
                   key={cell.id}
-                  isNumeric={meta?.isNumeric}
                   borderBottom={
-                    ind == table.getRowModel().rows.length - 1
+                    ind === table.getRowModel().rows.length - 1
                       ? 'none'
                       : undefined
                   }
                 >
-                  {cell.column.id == 'walletAddress' ? <Code _hover={{textDecoration: 'none'}} bg="none" as={Link} href={cell.getValue()}>{cell.getValue().substring(0,6)}...{cell.getValue().slice(-4)}<ExternalLinkIcon ml={1.5} opacity={0.8} transform="translateY(-1.5px)" /></Code> : flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  {cell.column.id == 'feesPaid' && ' USDC'}
-                  {cell.column.id == 'estimatedDistribution' && ' SNX'}
+                  {cell.column.id === 'walletAddress' ? (
+                    <Code
+                      _hover={{ textDecoration: 'none' }}
+                      bg="none"
+                      as={Link}
+                      href={cell.getValue() as string}
+                    >
+                      {(cell.getValue() as string).substring(0, 6)}...
+                      {(cell.getValue() as string).slice(-4)}
+                      <ExternalLinkIcon
+                        ml={1.5}
+                        opacity={0.8}
+                        transform="translateY(-1.5px)"
+                      />
+                    </Code>
+                  ) : (
+                    flexRender(cell.column.columnDef.cell, cell.getContext())
+                  )}
+                  {cell.column.id === 'feesPaid' && ' USDC'}
+                  {cell.column.id === 'estimatedDistribution' && ' SNX'}
                 </Td>
               );
             })}

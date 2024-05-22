@@ -59,7 +59,7 @@ const filteredWeeks = weeks.filter((week) => {
 }).reverse();
 
 const Home = () => {
-  const [tableData, setTableData] = useState<ProcessedData[]>([]);
+  const [tableData, setTableData] = useState<ProcessedData | null>(null);
   const [filter, setFilter] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [weeklySnxTotal, setWeeklySnxTotal] = useState<boolean>(true);
