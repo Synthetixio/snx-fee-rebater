@@ -18,7 +18,6 @@ import {
   CircularProgressLabel,
   Progress,
   Spinner,
-  Button,
 } from '@chakra-ui/react';
 import { addWeeks, format, isBefore } from 'date-fns';
 import type { ChangeEvent } from 'react';
@@ -286,13 +285,6 @@ const Home = () => {
             })}
           </Select>
         </Box>
-
-        <CSVLink
-          data={filteredTableData}
-          filename={`${filteredWeeks[selectedWeek].start.toString()}.csv`}
-        >
-          <Button>Export</Button>
-        </CSVLink>
       </Flex>
 
       <Box
@@ -311,6 +303,18 @@ const Home = () => {
           <DataTable data={filteredTableData} price={snxPrice} />
         )}
       </Box>
+      {!loading && (
+        <Box w="100%" textAlign="right">
+          <CSVLink
+            data={filteredTableData}
+            filename={`${filteredWeeks[selectedWeek].start.toString()}.csv`}
+          >
+            <Link fontSize="xs" textDecoration="underline" color="gray.300">
+              Export as CSV
+            </Link>
+          </CSVLink>
+        </Box>
+      )}
     </Flex>
   );
 };
