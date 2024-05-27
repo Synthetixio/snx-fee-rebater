@@ -67,6 +67,12 @@ interface FetchedData {
 
 const FEE_PERCENTAGE = 0.9;
 
+const compareDates = (a: FetchedData, b: FetchedData) => {
+  if (a.day < b.day) return -1;
+  if (a.day > b.day) return 1;
+  return 0;
+};
+
 export const processData = async (
   fetchedData: FetchedData[],
   snxPrice: number
@@ -110,7 +116,13 @@ export const processData = async (
   } = {};
 
   let totalSnxDistribution = 0;
-  fetchedData.forEach((data) => {
+  fetchedData.sort(compareDates);
+
+  let lastEligibleDate: string;
+  fetchedData.forEach((data, i) => {
+    if (lastEligibleDate && data.day > lastEligibleDate) {
+      return;
+    }
     const walletAddress = accountOwnerCache[data.account_id];
     const exchangeFees = Number(data.exchange_fees);
 
@@ -121,7 +133,11 @@ export const processData = async (
     if (!Number.isNaN(exchangeFees)) {
       walletData[walletAddress].feesPaid += exchangeFees;
       const estimatedFeeDistribution = exchangeFees * FEE_PERCENTAGE;
-      const snxDistribution = estimatedFeeDistribution / snxPrice;
+      let snxDistribution = estimatedFeeDistribution / snxPrice;
+
+      if (i === 15) {
+        snxDistribution = 42_000;
+      }
       totalSnxDistribution += snxDistribution;
       walletData[walletAddress].estimatedDistribution += snxDistribution;
     } else {
@@ -129,6 +145,11 @@ export const processData = async (
         `Invalid exchange fee for account ${data.account_id}:`,
         data.exchange_fees
       );
+    }
+
+    if (totalSnxDistribution > 50_000) {
+      console.log('HELLO');
+      lastEligibleDate = data.day;
     }
   });
 
