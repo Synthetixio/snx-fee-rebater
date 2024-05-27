@@ -22,6 +22,7 @@ import {
 import { addWeeks, format, isBefore } from 'date-fns';
 import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
+import { CSVLink } from 'react-csv';
 
 import { DataTable } from '~/lib/components/DataTable';
 // import type { ProcessedData } from '~/lib/utils/processData';
@@ -302,6 +303,18 @@ const Home = () => {
           <DataTable data={filteredTableData} price={snxPrice} />
         )}
       </Box>
+      {!loading && (
+        <Box w="100%" textAlign="right">
+          <CSVLink
+            data={filteredTableData}
+            filename={`${filteredWeeks[selectedWeek].start.toString()}.csv`}
+          >
+            <Link fontSize="xs" textDecoration="underline" color="gray.300">
+              Export as CSV
+            </Link>
+          </CSVLink>
+        </Box>
+      )}
     </Flex>
   );
 };

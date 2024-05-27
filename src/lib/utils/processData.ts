@@ -67,6 +67,12 @@ interface FetchedData {
 
 const FEE_PERCENTAGE = 0.9;
 
+const compareDates = (a: FetchedData, b: FetchedData) => {
+  if (a.day < b.day) return -1;
+  if (a.day > b.day) return 1;
+  return 0;
+};
+
 export const processData = async (
   fetchedData: FetchedData[],
   snxPrice: number
@@ -110,7 +116,13 @@ export const processData = async (
   } = {};
 
   let totalSnxDistribution = 0;
+  fetchedData.sort(compareDates);
+
+  let lastEligibleDate: string;
   fetchedData.forEach((data) => {
+    if (lastEligibleDate && data.day > lastEligibleDate) {
+      return;
+    }
     const walletAddress = accountOwnerCache[data.account_id];
     const exchangeFees = Number(data.exchange_fees);
 
@@ -129,6 +141,10 @@ export const processData = async (
         `Invalid exchange fee for account ${data.account_id}:`,
         data.exchange_fees
       );
+    }
+
+    if (totalSnxDistribution > 50_000) {
+      lastEligibleDate = data.day;
     }
   });
 
