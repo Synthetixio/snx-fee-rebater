@@ -291,14 +291,7 @@ const Home = () => {
           data={filteredTableData}
           filename={`${filteredWeeks[selectedWeek].start.toString()}.csv`}
         >
-          <Button
-            size="sm"
-            bg="black"
-            color="gray.300"
-            onClick={() => console.log('test')}
-          >
-            Export
-          </Button>
+          <Button>Export</Button>
         </CSVLink>
       </Flex>
 
