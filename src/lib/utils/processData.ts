@@ -119,7 +119,7 @@ export const processData = async (
   fetchedData.sort(compareDates);
 
   let lastEligibleDate: string;
-  fetchedData.forEach((data, i) => {
+  fetchedData.forEach((data) => {
     if (lastEligibleDate && data.day > lastEligibleDate) {
       return;
     }
@@ -133,11 +133,7 @@ export const processData = async (
     if (!Number.isNaN(exchangeFees)) {
       walletData[walletAddress].feesPaid += exchangeFees;
       const estimatedFeeDistribution = exchangeFees * FEE_PERCENTAGE;
-      let snxDistribution = estimatedFeeDistribution / snxPrice;
-
-      if (i === 15) {
-        snxDistribution = 42_000;
-      }
+      const snxDistribution = estimatedFeeDistribution / snxPrice;
       totalSnxDistribution += snxDistribution;
       walletData[walletAddress].estimatedDistribution += snxDistribution;
     } else {
@@ -148,7 +144,6 @@ export const processData = async (
     }
 
     if (totalSnxDistribution > 50_000) {
-      console.log('HELLO');
       lastEligibleDate = data.day;
     }
   });
