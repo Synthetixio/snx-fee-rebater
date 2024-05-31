@@ -20,6 +20,7 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import { addWeeks, format, isBefore } from 'date-fns';
+import { ethers } from 'ethers';
 import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 import { CSVLink } from 'react-csv';
@@ -67,9 +68,29 @@ const Home = () => {
   const [filteredTableData, setFilteredTableData] = useState<any>([]);
   const [filter, setFilter] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingTotal, setLoadingTotal] = useState<boolean>(true);
+  const [total, setTotal] = useState<bigint>(BigInt(0));
   const [weeklySnxTotal, setWeeklySnxTotal] = useState<number>(0);
   const [selectedWeek, setSelectedWeek] = useState<number>(0);
   const [snxPrice, setSnxPrice] = useState(2.5);
+
+  useEffect(() => {
+    const provider = new ethers.JsonRpcProvider(
+      process.env.NEXT_PUBLIC_BASE_RPC_URL
+    );
+    const erc20 = new ethers.Contract(
+      '0x22e6966B799c4D5B13BE962E1D117b56327FDa66',
+      ['function balanceOf(address owner) view returns (uint256)'],
+      provider
+    );
+    erc20
+      .balanceOf('0xE29C7a960170Ba4422405fbd21964B3886c72db1')
+      .then((balance: bigint) => {
+        const newTotal = BigInt('500000') - balance / BigInt(10 ** 18);
+        setTotal(newTotal);
+        setLoadingTotal(false);
+      });
+  }, []);
 
   useEffect(() => {
     const fetchPrice = async () => {
@@ -181,7 +202,7 @@ const Home = () => {
               color="#00D1FF"
               size="100%"
               thickness="6px"
-              isIndeterminate={loading}
+              isIndeterminate={loadingTotal}
             >
               <CircularProgressLabel>
                 <Text
@@ -191,7 +212,10 @@ const Home = () => {
                   opacity={loading ? 0 : 1}
                   transition="opacity 0.33s"
                 >
-                  0 SNX
+                  {total.toLocaleString(undefined, {
+                    maximumFractionDigits: 0,
+                  })}{' '}
+                  SNX
                 </Text>
                 <Text
                   fontSize="xs"
