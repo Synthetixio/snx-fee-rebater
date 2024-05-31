@@ -197,7 +197,7 @@ const Home = () => {
         >
           <Flex alignItems="center" justifyContent="center">
             <CircularProgress
-              value={0}
+              value={(Number(total) / 500000) * 100}
               trackColor="#001C22"
               color="#00D1FF"
               size="100%"
