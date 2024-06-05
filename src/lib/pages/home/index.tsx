@@ -32,6 +32,11 @@ import { processData } from '~/lib/utils/processData';
 const formatDate = (date: Date): string =>
   format(date, "yyyy-MM-dd'T'HH:mm:ssXXX");
 
+const SNX_PRICE_MAPPING: Record<number, number> = {
+  1: 2.82,
+  2: 2.886,
+};
+
 // Function to generate weeks array
 const generateWeeks = (startDate: Date, numberOfWeeks: number) => {
   const weeksArray = [];
@@ -101,9 +106,11 @@ const Home = () => {
 
         const response = await fetch(url.toString());
         const data = await response.json();
+        const priceToUse =
+          selectedWeek === 0 ? snxPrice : SNX_PRICE_MAPPING[selectedWeek];
         const { processedData, totalSnxDistribution } = (await processData(
           data,
-          snxPrice
+          priceToUse
         )) as any;
         setTableData(processedData);
         setWeeklySnxTotal(Math.floor(totalSnxDistribution));
@@ -306,7 +313,14 @@ const Home = () => {
       {!loading && (
         <Box w="100%" textAlign="right">
           <CSVLink
-            data={filteredTableData}
+            data={filteredTableData.map((row: any) => {
+              return {
+                token_type: 'erc20',
+                token_address: '0x22e6966B799c4D5B13BE962E1D117b56327FDa66',
+                receiver: row.walletAddress,
+                amount: row.estimatedDistribution,
+              };
+            })}
             filename={`${filteredWeeks[selectedWeek].start.toString()}.csv`}
           >
             <Link fontSize="xs" textDecoration="underline" color="gray.300">
