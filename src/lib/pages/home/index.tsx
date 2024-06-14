@@ -33,9 +33,11 @@ import { processData } from '~/lib/utils/processData';
 const formatDate = (date: Date): string =>
   format(date, "yyyy-MM-dd'T'HH:mm:ssXXX");
 
+// latest week index goes first; so all indices need to be incremented below
 const SNX_PRICE_MAPPING: Record<number, number> = {
-  1: 2.82,
-  2: 2.886,
+  1: 2.332,
+  2: 2.82,
+  3: 2.886,
 };
 
 // Function to generate weeks array
@@ -151,6 +153,8 @@ const Home = () => {
       })
     );
   }, [filter, tableData]);
+
+  console.log('selected week', selectedWeek);
 
   return (
     <Flex direction="column" minHeight="70vh" gap={6} mb={6} w="full">
