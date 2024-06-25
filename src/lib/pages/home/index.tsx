@@ -22,7 +22,7 @@ import {
 import { addWeeks, format, isBefore } from 'date-fns';
 import { ethers } from 'ethers';
 import type { ChangeEvent } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CSVLink } from 'react-csv';
 
 import { DataTable } from '~/lib/components/DataTable';
@@ -112,6 +112,11 @@ const Home = () => {
     fetchPrice();
   }, []);
 
+  const priceToUse = useMemo(
+    () => (selectedWeek === 0 ? snxPrice : SNX_PRICE_MAPPING[selectedWeek]),
+    [snxPrice, selectedWeek]
+  );
+
   useEffect(() => {
     const fetchData = async () => {
       if (!filteredWeeks[selectedWeek] || !snxPrice) {
@@ -130,8 +135,7 @@ const Home = () => {
 
         const response = await fetch(url.toString());
         const data = await response.json();
-        const priceToUse =
-          selectedWeek === 0 ? snxPrice : SNX_PRICE_MAPPING[selectedWeek];
+
         const { processedData, totalSnxDistribution } = (await processData(
           data,
           priceToUse
@@ -145,7 +149,7 @@ const Home = () => {
     };
 
     fetchData();
-  }, [selectedWeek, snxPrice]);
+  }, [selectedWeek, snxPrice, priceToUse]);
 
   useEffect(() => {
     setFilteredTableData(
@@ -336,7 +340,7 @@ const Home = () => {
             <Spinner m="auto" size="xl" color="#00D1FF" />
           </Flex>
         ) : (
-          <DataTable data={filteredTableData} price={snxPrice} />
+          <DataTable data={filteredTableData} price={priceToUse} />
         )}
       </Box>
       {!loading && (
