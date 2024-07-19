@@ -35,13 +35,14 @@ const formatDate = (date: Date): string =>
 
 // latest week index goes first; so all indices need to be incremented below
 const SNX_PRICE_MAPPING: Record<number, number> = {
-  1: 1.642,
-  2: 1.949,
-  3: 2.006,
-  4: 1.982,
-  5: 2.332,
-  6: 2.82,
-  7: 2.886,
+  1: 1.927,
+  2: 1.642,
+  3: 1.949,
+  4: 2.006,
+  5: 1.982,
+  6: 2.332,
+  7: 2.82,
+  8: 2.886,
 };
 
 // Function to generate weeks array
