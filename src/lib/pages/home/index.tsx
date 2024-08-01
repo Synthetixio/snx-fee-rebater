@@ -65,7 +65,7 @@ const generateWeeks = (startDate: Date, numberOfWeeks: number) => {
 const initialStartDate = new Date(Date.UTC(2024, 4, 22, 20, 0, 0));
 
 // Generate 100 weeks
-const weeks = generateWeeks(initialStartDate, 100);
+const weeks = generateWeeks(initialStartDate, 10);
 
 // Filter out weeks that start later than the current time
 const now = new Date();
